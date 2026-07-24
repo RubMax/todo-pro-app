@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Liste des Tâches</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+ html, body {
+          height: 100%;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+        }
+   body {
+  border-radius: 20px;
+  overflow: visible;
+}
+
+
+.wrapper {
+  height: 100%;
+  margin: 0 auto;
+  max-width: 95%;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+
+    .container-fluid {
+          min-height: 100vh;
+          border-radius: 20px;
+        }
+
+    h6 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 2px;
+    }
+
+    input, select, button {
+      padding: 5px;
+      margin: 5px 5px 5px 0;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+
+    #taskInput { width: 35%; }
+    #repeatSelect, #dateInput, #reminderTimeInput { width: 10%; }
+
+    @media (max-width: 600px) {
+      #taskInput, #repeatSelect, #dateInput, #reminderTimeInput {
+        width: 100% !important;
+      }
+    }
+
+    button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease;
+  padding: 2px 6px;
+  font-size: 12px;
+  line-height: 1;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    input, select {
+      font-size: 12px;
+      padding: 2px 6px;
+      margin: 2px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      line-height: 1;
+      box-sizing: border-box;
+    }
+
+    .task {
+      background-color: rgb(131, 173, 220);
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-top: 5px;
+      padding: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: transform 0.2s, opacity 0.5s ease-in-out;
+      opacity: 0;
+      animation: fadeIn 0.5s forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    
+
+    #taskList {
+      font-size: 15px;
+      margin-top: 8px;
+    min-height: 400px;
+    max-height: 300px;
+    overflow-y: auto;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 13px;
+  }
+
+    .task.completed span {
+      text-decoration: line-through;
+      color: #95a5a6;
+    }
+
+    .priority-daily { background-color: #e3f2fd; border-left: 6px solid #2196f3; }
+    .priority-monthly { background-color: #fff3e0; border-left: 6px solid #fb8c00; }
+    .priority-yearly { background-color: #e8f5e9; border-left: 6px solid #4caf50; }
+
+    .buttons { display: flex; gap: 5px; }
+    .buttons button { background-color: rgb(131, 173, 220); color: white; }
+    .buttons button:hover { background-color: #495057; }
+
+    .info { font-size: 0.75em; color: #007bff; }
+
+    .filter-buttons button {
+      padding: 4px 6px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+    }
+
+    .filter-buttons button:hover {
+      background-color: #0056b3;
+    }
+
+    .filter-buttons .active {
+      background-color: gray !important;
+    }
+
+    .search-section .icon {
+          font-size: 14px;
+        }
+            .image-container {
+          text-align: center;
+        }
+
+        .image-container img {
+          width: 400px;
+          height: 90px;
+          margin-bottom: 0px;
+        }
+
+        /* Style pour les notifications dans la page */
+        .notification-banner {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          z-index: 9999;
+          max-width: 400px;
+          animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+          from { transform: translateX(100%); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+
+  </style>
+</head>
+        
+<body >
+   <div class="wrapper">
+<div class="image-container">
+        </div>
+<div class="container-fluid mt-1" style="background-color: rgb(131, 173, 220);">
+
+  
+
+  <div class="row">
+    <div class="col-sm-2">
+       <h6>Liste des Tâches</h6>
+      <div style="margin-top: 5px; padding: 5px; border: 1px solid #ccc; border-radius: 10px; background-color: #f8f9fa;">
+            <button class="w-100 mb-1"><a href="index.html", target="_blank">Index</a></button>
+
+      </div>
+
+      <div style="margin-top: 5px; padding: 5px; border: 1px solid #ccc; border-radius: 10px; background-color: #f8f9fa;">
+            <button onclick="backupTasks()" class="w-100 mb-1">💾 Backup</button>
+            <input type="file" id="backupFileInput" accept=".json" style="display: none;">
+            <button type="button" class="w-100" onclick="document.getElementById('backupFileInput').click()">📂 Importer</button>
+            <button onclick="importBackup()" class="w-100 mt-1">📥 Ajouter</button>
+            <div id="message" style="margin-top: 10px; color: green;"></div>
+      </div>
+    </div>
+
+    <div class="col-sm-10" style="background-color: rgb(131, 173, 220);">
+     
+      <div>
+        <input type="text" id="taskInput" placeholder="Entrez une tâche..." required>
+        <select id="repeatSelect">
+          <option value="day">🗓️ Jour</option>
+          <option value="daily">🗓️ Journalier</option>
+          <option value="monthly">📅 Mensuel</option>
+          <option value="yearly">🎉 Annuel</option>
+        </select>
+        <input type="date" id="dateInput">
+        <input type="time" id="reminderTimeInput">
+        <button onclick="addTask()">➕ Ajouter</button>
+      
+        🔍 <input type="text" id="searchInput" placeholder="Rechercher une tâche..." oninput="loadTasks()">
+      </div>
+
+      <div class="filter-section">
+    <div class="filter-buttons">
+      <button onclick="setFilter('all')" id="filter-all" class="active">Toutes</button>
+      <button onclick="setFilter('today')" id="filter-today">Aujourd'hui</button>
+      <button onclick="setFilter('daily')" id="filter-daily">Journalier</button>
+      <button onclick="setFilter('monthly')" id="filter-monthly">Mensuelles</button>
+      <button onclick="setFilter('yearly')" id="filter-yearly">Annuel</button>
+      <button onclick="setFilter('done')" id="filter-done">Accomplies</button>
+      <button onclick="setFilter('notDone')" id="filter-notDone">Non accomplies</button>
+    </div>
+  </div>
+
+      <div id="taskList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Zone pour les notifications dans la page -->
+<div id="notificationContainer" class="notification-banner"></div>
+
+<script>
+  let currentFilter = 'all';
+  let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+
+  // === SAUVEGARDE AUTOMATIQUE TOUTES LES 5 HEURES ===
+  const BACKUP_INTERVAL_MS = 5 * 60 * 1000;
+  const BACKUP_FILENAME = "taches_backup.json";
+
+  function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }
+
+  function autoBackupTasks() {
+    const data = JSON.stringify(tasks, null, 2);
+    const blob = new Blob([data], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = BACKUP_FILENAME;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    console.log("✅ Sauvegarde auto à", new Date().toLocaleString());
+  }
+
+  setInterval(autoBackupTasks, BACKUP_INTERVAL_MS);
+
+  // === GESTION UNIVERSELLE DES NOTIFICATIONS ===
+  
+  // Version compatible avec TOUS les navigateurs Chrome
+  function sendNotification(title, message) {
+    // 1️⃣ Méthode 1: Service Worker (la meilleure, fonctionne même en arrière-plan)
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.ready.then(function(registration) {
+        try {
+          registration.showNotification(title || '🔔 Rappel', {
+            body: message || 'Tâche en attente',
+            icon: 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/img/bootstrap-logo.svg',
+            badge: 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/img/bootstrap-logo.svg',
+            vibrate: [200, 100, 200],
+            requireInteraction: true,
+            tag: 'reminder-' + Date.now(),
+            data: {
+              url: window.location.href,
+              time: new Date().toISOString()
+            }
+          });
+          return true;
+        } catch(e) {
+          console.warn('SW notification error:', e);
+        }
+      });
+    }
+
+    // 2️⃣ Méthode 2: Notification API (fallback pour Chrome sans SW)
+    if ('Notification' in window && Notification.permission === 'granted') {
+      try {
+        const notification = new Notification(title || '🔔 Rappel', {
+          body: message || 'Tâche en attente',
+          icon: 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/img/bootstrap-logo.svg',
+          requireInteraction: true,
+          tag: 'reminder-' + Date.now()
+        });
+        
+        notification.onclick = function() {
+          window.focus();
+          this.close();
+        };
+        
+        return true;
+      } catch(e) {
+        console.warn('Notification API error:', e);
+      }
+    }
+
+    // 3️⃣ Méthode 3: Affichage dans la page (fallback ultime)
+    showInPageNotification(title, message);
+    return false;
+  }
+
+  // Affichage dans la page (fonctionne toujours)
+  function showInPageNotification(title, message) {
+    const container = document.getElementById('notificationContainer');
+    if (!container) return;
+
+    const notif = document.createElement('div');
+    notif.className = 'alert alert-warning alert-dismissible fade show';
+    notif.style.backgroundColor = '#fff3cd';
+    notif.style.borderLeft = '4px solid #ffc107';
+    notif.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+    notif.innerHTML = `
+      <strong>${title || '🔔 Rappel'}</strong><br>
+      ${message || 'Tâche en attente'}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" onclick="this.parentElement.remove()"></button>
+    `;
+    
+    container.appendChild(notif);
+    
+    // Auto-supprimer après 30 secondes
+    setTimeout(() => {
+      if (notif.parentElement) notif.remove();
+    }, 30000);
+  }
+
+  // === VÉRIFICATION DES RAPPELS AMÉLIORÉE ===
+  function checkReminders() {
+
+    const now = new Date();
+
+    const today = now.toISOString().split("T")[0];
+
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+
+    tasks.forEach(task => {
+
+        if (task.completed) return;
+
+        if (!task.reminderTime) return;
+
+        const [hour, minute] = task.reminderTime.split(":").map(Number);
+
+        if (hour !== currentHour || minute !== currentMinute) return;
+
+        const due = new Date(task.dueDate);
+
+        let show = false;
+
+        switch(task.repeat){
+
+            // Une seule fois
+            case "day":
+
+                show = (task.dueDate === today);
+
+                break;
+
+            // Tous les jours
+            case "daily":
+
+                show = true;
+
+                break;
+
+            // Chaque mois
+            case "monthly":
+
+                show = due.getDate() === now.getDate();
+
+                break;
+
+            // Chaque année
+            case "yearly":
+
+                show =
+                    due.getDate() === now.getDate() &&
+                    due.getMonth() === now.getMonth();
+
+                break;
+
+        }
+
+        if(!show) return;
+
+        const key = today + "_" + currentHour + "_" + currentMinute;
+
+        if(task.lastReminder === key) return;
+
+        sendNotification(
+            "🔔 Rappel",
+            task.text
+        );
+
+        task.lastReminder = key;
+
+        saveTasks();
+        saveToGoogleDrive();
+
+    });
+
+}
+  // === SERVICE WORKER - ENREGISTREMENT AMÉLIORÉ ===
+  function registerServiceWorker() {
+    if (!('serviceWorker' in navigator)) {
+      console.warn('⚠️ Service Worker non supporté par ce navigateur');
+      // Demander la permission pour les notifications classiques
+      requestNotificationPermission();
+      return;
+    }
+
+    // Essayer d'enregistrer depuis un fichier externe
+    navigator.serviceWorker.register('service-worker.js')
+      .then(function(registration) {
+        console.log('✅ Service Worker enregistré avec succès');
+        
+        // Demander la permission après enregistrement
+        requestNotificationPermission();
+        
+        // Vérifier les mises à jour
+        registration.update();
+      })
+      .catch(function(error) {
+        console.warn('⚠️ Échec de l\'enregistrement SW, utilisation du fallback:', error);
+        
+        // Fallback: enregistrer un SW inline
+        registerInlineServiceWorker();
+      });
+  }
+
+  // Service Worker inline (fallback)
+  function registerInlineServiceWorker() {
+    const swCode = `
+      self.addEventListener('install', function(e) {
+        self.skipWaiting();
+      });
+
+      self.addEventListener('activate', function(e) {
+        e.waitUntil(clients.claim());
+      });
+
+      self.addEventListener('notificationclick', function(e) {
+        e.notification.close();
+        e.waitUntil(
+          clients.matchAll({ type: 'window' }).then(function(clientList) {
+            for (var i = 0; i < clientList.length; i++) {
+              var client = clientList[i];
+              if (client.url && 'focus' in client) {
+                return client.focus();
+              }
+            }
+            if (clients.openWindow) {
+              return clients.openWindow(e.notification.data?.url || '/');
+            }
+          })
+        );
+      });
+    `;
+
+    try {
+      const swBlob = new Blob([swCode], { type: 'application/javascript' });
+      const swUrl = URL.createObjectURL(swBlob);
+      
+      navigator.serviceWorker.register(swUrl)
+        .then(function(registration) {
+          console.log('✅ Service Worker inline enregistré');
+          requestNotificationPermission();
+          setTimeout(() => URL.revokeObjectURL(swUrl), 1000);
+        })
+        .catch(function(err) {
+          console.warn('⚠️ Échec du SW inline, utilisation des notifications classiques');
+          requestNotificationPermission();
+        });
+    } catch(e) {
+      console.warn('⚠️ Erreur SW inline:', e);
+      requestNotificationPermission();
+    }
+  }
+
+  // Demander la permission pour les notifications
+  function requestNotificationPermission() {
+    if (!('Notification' in window)) {
+      console.warn('⚠️ Notifications non supportées');
+      return;
+    }
+
+    if (Notification.permission === 'granted') {
+      console.log('✅ Permission notifications accordée');
+      return;
+    }
+
+    if (Notification.permission === 'denied') {
+      console.warn('⚠️ Permission notifications refusée');
+      return;
+    }
+
+    // Demander la permission
+    Notification.requestPermission()
+      .then(function(permission) {
+        if (permission === 'granted') {
+          console.log('✅ Permission notifications accordée par l\'utilisateur');
+          // Envoyer une notification de test
+          setTimeout(() => {
+            sendNotification('✅ Notifications activées', 'Vous recevrez les rappels de tâches');
+          }, 1000);
+        } else {
+          console.warn('⚠️ Permission notifications refusée');
+        }
+      })
+      .catch(function(err) {
+        console.warn('⚠️ Erreur demande permission:', err);
+      });
+  }
+
+  // === AUTRES FONCTIONS ===
+  function setFilter(value) {
+    currentFilter = value;
+    document.querySelectorAll('.filter-buttons button').forEach(btn => btn.classList.remove('active'));
+    const activeBtn = document.getElementById('filter-' + value);
+    if (activeBtn) activeBtn.classList.add('active');
+    loadTasks();
+    saveToGoogleDrive();
+  }
+
+  function addTask() {
+    let text = document.getElementById("taskInput").value.trim();
+    if (!text) return;
+    text = text.charAt(0).toUpperCase() + text.slice(1);
+
+    const repeat = document.getElementById("repeatSelect").value;
+    const dueDate = document.getElementById("dateInput").value;
+    const reminderTime = document.getElementById("reminderTimeInput").value;
+    const taskDate = dueDate || "";
+    
+    
+    const task = {
+
+    text,
+
+    repeat,
+
+    dueDate: taskDate,
+
+    reminderTime,
+
+    completed:false,
+
+    lastReminder:null
+
+};
+    tasks.push(task);
+    saveTasks();
+    saveToGoogleDrive();
+
+    document.getElementById("taskInput").value = "";
+    document.getElementById("dateInput").value = "";
+    document.getElementById("reminderTimeInput").value = "";
+    loadTasks();
+    saveToGoogleDrive();
+  }
+
+  function toggleTask(index) {
+    tasks[index].completed = !tasks[index].completed;
+    saveTasks();
+    loadTasks();        // Sauvegarde locale
+    saveToGoogleDrive();  // Sauvegarde sur Google Drive
+  }
+
+  function deleteTask(index) {
+    tasks.splice(index, 1);
+    saveTasks();
+    loadTasks();        // Sauvegarde locale
+    saveToGoogleDrive();  // Sauvegarde sur Google Drive
+  }
+
+  function editTask(index) {
+    const task = tasks[index];
+    const newText = prompt("Modifier la tâche :", task.text);
+    if (newText === null || newText.trim() === "") return;
+
+    task.text = newText.trim();
+    task.repeat = prompt("Rappel (daily, monthly, yearly) :", task.repeat) || task.repeat;
+    task.dueDate = prompt("Date (YYYY-MM-DD) :", task.dueDate) || task.dueDate;
+    task.reminderTime = prompt("Heure de rappel (HH:MM) :", task.reminderTime) || task.reminderTime;
+
+    saveTasks();
+    loadTasks();         // Sauvegarde locale
+    saveToGoogleDrive();  // Sauvegarde sur Google Drive
+  }
+
+  function matchesFilter(task) {
+    const today = new Date().toISOString().split("T")[0];
+    if (currentFilter === "done") return task.completed;
+    if (currentFilter === "notDone") return !task.completed;
+    if (currentFilter === "today") return task.dueDate === today;
+    if (["day", "daily", "monthly", "yearly"].includes(currentFilter)) return task.repeat === currentFilter;
+    return true;
+  }
+
+  function matchesSearch(task) {
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    return task.text.toLowerCase().includes(search);
+  }
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('fr-FR');
+  }
+
+  function getRepeatLabel(repeat) {
+    if (repeat === "day") return "Jour";
+    if (repeat === "daily") return "Journalier";
+    if (repeat === "monthly") return "Mensuel";
+    if (repeat === "yearly") return "Annuel";
+    return "Aucun";
+  }
+
+  function shouldDisplayTask(task) {
+    return !task.completed || currentFilter === "done";
+  }
+
+  function loadTasks() {
+    const taskList = document.getElementById("taskList");
+    taskList.innerHTML = "";
+
+    const search = document.getElementById("searchInput").value.toLowerCase();
+
+    const filteredTasks = tasks
+      .map((task, index) => ({ task, index }))
+      .filter(({ task }) => matchesFilter(task) && matchesSearch(task) && shouldDisplayTask(task));
+
+    filteredTasks.forEach(({ task, index }) => {
+      const taskDiv = document.createElement("div");
+      taskDiv.className = "task";
+      if (task.completed) taskDiv.classList.add("completed");
+
+      if (task.repeat === "daily") taskDiv.classList.add("priority-daily");
+      if (task.repeat === "monthly") taskDiv.classList.add("priority-monthly");
+      if (task.repeat === "yearly") taskDiv.classList.add("priority-yearly");
+
+      taskDiv.innerHTML = `
+        <span>
+          ${task.text}
+          <div class="info">
+            ${task.dueDate ? `📅 ${formatDate(task.dueDate)} ` : ""}
+            ${task.repeat ? `🔁 ${getRepeatLabel(task.repeat)}` : ""}
+            ${task.reminderTime ? `⏰ ${task.reminderTime}` : ""}
+          </div>
+        </span>
+        <div class="buttons">
+          <button onclick="toggleTask(${index})">✅</button>
+          <button onclick="editTask(${index})">✏️</button>
+          <button onclick="deleteTask(${index})">🗑️</button>
+        </div>
+      `;
+
+      taskList.appendChild(taskDiv);
+    });
+    saveTasks();          // Sauvegarde locale
+    saveToGoogleDrive();  // Sauvegarde sur Google Drive
+  }
+
+  function backupTasks() {
+    const data = JSON.stringify(tasks, null, 2);
+    const blob = new Blob([data], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "taches_backup.json";
+    a.click();
+  }
+
+  function importBackup() {
+    const input = document.getElementById("backupFileInput");
+    if (!input.files.length) return;
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      try {
+        const importedTasks = JSON.parse(e.target.result);
+        if (Array.isArray(importedTasks)) {
+          tasks = importedTasks;
+          saveTasks();
+          loadTasks();
+          document.getElementById("message").innerText = "✅ Importé avec succès !";
+          setTimeout(() => document.getElementById("message").innerText = "", 3000);
+        } else {
+          throw new Error("Format invalide");
+        }
+      } catch (err) {
+        alert("Erreur d'importation : " + err.message);
+      }
+    };
+    reader.readAsText(input.files[0]);
+  }
+
+  // === INITIALISATION ===
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Enregistrer le Service Worker
+    registerServiceWorker();
+
+    // 2. Charger les tâches
+    loadTasks();
+
+    // 3. Vérifier les rappels toutes les 30 secondes
+    setInterval(checkReminders, 30000);
+    
+    // 4. Vérification immédiate
+    setTimeout(checkReminders, 2000);
+
+    // 5. Vérifier si la page a été ouverte depuis une notification
+    if (window.location.search.includes('from=notification')) {
+      showInPageNotification('👋 Bienvenue', 'Vous avez été redirigé depuis une notification');
+    }
+
+    console.log("✅ Application chargée avec notifications universelles");
+  });
+// Sauvegarde automatique vers Google Drive
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUsXFGy0QNc9yzoLXMWxO2pK5UnQAjhCu83D_QgoWJXnkp_6oJKWRkU32VFpY8yVeBzQ/exec";
+
+function saveToGoogleDrive() {
+  const data = JSON.stringify(tasks, null, 2);
+  
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors', // Important pour éviter les CORS
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: data
+  })
+  .then(response => response.json())
+  .then(result => {
+    if (result.success) {
+      console.log('✅ Sauvegarde Google Drive réussie');
+      document.getElementById("message").innerText = "✅ Sauvegardé sur Google Drive !";
+      setTimeout(() => document.getElementById("message").innerText = "", 3000);
+    } else {
+      console.error('❌ Erreur Google Drive:', result.error);
+    }
+  })
+  .catch(error => {
+    console.error('❌ Erreur de connexion:', error);
+  });
+}
+
+// Modifier la sauvegarde automatique pour utiliser Google Drive
+setInterval(() => {
+  autoBackupTasks(); // Sauvegarde locale
+  saveToGoogleDrive(); // Sauvegarde Google Drive
+}, BACKUP_INTERVAL_MS);
+
+
+
+// === SAUVEGARDE VERS GOOGLE DRIVE ===
+const DRIVE_FOLDER_ID = "1tj3sr5iVP7t4CbNHac3xawSAOze24Fy2";
+
+async function saveToGoogleDrive() {
+
+    try{
+
+        const response = await fetch("VOTRE_URL_WEBAPP",{
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify(tasks)
+
+        });
+
+        const result = await response.json();
+
+        console.log(result);
+
+        if(result.success){
+
+            console.log("✅ Sauvegarde Drive OK");
+
+        }else{
+
+            console.error(result.error);
+
+        }
+
+    }catch(err){
+
+        console.error(err);
+
+    }
+
+}
+// Modifier la fonction de sauvegarde automatique
+function autoBackupTasks() {
+  // 1. Sauvegarde locale (dossier Téléchargements)
+  const data = JSON.stringify(tasks, null, 2);
+  const blob = new Blob([data], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "taches_backup.json";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  
+  // 2. Sauvegarde vers Google Drive
+  saveToGoogleDrive();
+  
+  console.log("✅ Sauvegarde auto effectuée à", new Date().toLocaleString());
+}
+</script>
+</div>
+</body>
+</html>
