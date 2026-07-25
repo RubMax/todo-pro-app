@@ -629,9 +629,18 @@
             <div id="connectionStatus" style="font-size:11px;text-align:center;color:#666;">
                 📶 Connecté
        </div>
-</div>
+
+       </div>
       <div>
-          
+          <!-- Ajouter dans le panneau latéral, dans la section des boutons -->
+<div style="margin-top: 5px; padding: 5px; border: 1px solid #ccc; border-radius: 10px; background-color: #f8f9fa;">
+    <button onclick="requestNotificationPermission()" class="w-100 mb-1" id="notifPermissionBtn">
+        🔔 Activer notifications
+    </button>
+    <div id="notifStatus" style="font-size:11px;text-align:center;color:#666;">
+        ⚠️ Cliquez pour activer
+    </div>
+</div>
       </div>
     </div>
     </div>
@@ -1332,14 +1341,27 @@ function editTask(index) {
   showInPageNotification('✏️ Modifiée', 'Tâche mise à jour');
 }
 
-  function matchesFilter(task) {
+  // === MODIFIER LA FONCTION matchesFilter ===
+function matchesFilter(task) {
     const today = new Date().toISOString().split("T")[0];
+    
     if (currentFilter === "done") return task.completed;
     if (currentFilter === "notDone") return !task.completed;
-    if (currentFilter === "today") return task.dueDate === today;
-    if (["day", "daily", "monthly", "yearly"].includes(currentFilter)) return task.repeat === currentFilter;
+    
+    // MODIFICATION ICI : Afficher toutes les tâches dont la date = aujourd'hui
+    // Peu importe l'heure
+    if (currentFilter === "today") {
+        // Vérifier si la tâche a une date et qu'elle correspond à aujourd'hui
+        if (!task.dueDate) return false;
+        return task.dueDate === today;
+    }
+    
+    if (["day", "daily", "monthly", "yearly"].includes(currentFilter)) {
+        return task.repeat === currentFilter;
+    }
+    
     return true;
-  }
+}
 
   function matchesSearch(task) {
     const search = document.getElementById("searchInput").value.toLowerCase();
