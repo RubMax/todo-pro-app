@@ -173,6 +173,421 @@
           to { transform: translateX(0); opacity: 1; }
         }
 
+        /* ============================================================
+           STYLES POUR LES NOTIFICATIONS PERSISTANTES
+           ============================================================ */
+        #persistentNotificationsContainer {
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          max-width: 400px;
+          max-height: 80vh;
+          overflow-y: auto;
+          z-index: 10000;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .notification-persistent {
+          padding: 15px;
+          border-radius: 10px;
+          border-left: 4px solid #ffc107;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          animation: slideIn 0.5s ease;
+          background: #fff3cd;
+        }
+
+        .notification-persistent.expired {
+          border-left-color: #d32f2f;
+          background: #ffebee;
+        }
+
+        .notification-persistent .btn-accomplish {
+          background: #4caf50;
+          color: white;
+          border: none;
+          padding: 6px 12px;
+          border-radius: 6px;
+          font-size: 12px;
+          cursor: pointer;
+          transition: background 0.3s;
+          flex: 1;
+          min-width: 70px;
+        }
+
+        .notification-persistent .btn-accomplish:hover {
+          background: #388e3c;
+        }
+
+        .notification-persistent .btn-add-hour {
+          background: #2196f3;
+          color: white;
+          border: none;
+          padding: 6px 12px;
+          border-radius: 6px;
+          font-size: 12px;
+          cursor: pointer;
+          transition: background 0.3s;
+          flex: 1;
+          min-width: 70px;
+        }
+
+        .notification-persistent .btn-add-hour:hover {
+          background: #1976d2;
+        }
+
+        .notification-persistent .btn-postpone {
+          background: #ff9800;
+          color: white;
+          border: none;
+          padding: 6px 12px;
+          border-radius: 6px;
+          font-size: 12px;
+          cursor: pointer;
+          transition: background 0.3s;
+          flex: 1;
+          min-width: 70px;
+        }
+
+        .notification-persistent .btn-postpone:hover {
+          background: #e68900;
+        }
+
+        .notification-persistent .btn-dismiss {
+          background: #6c757d;
+          color: white;
+          border: none;
+          padding: 6px 12px;
+          border-radius: 6px;
+          font-size: 12px;
+          cursor: pointer;
+          transition: background 0.3s;
+          flex: 0.5;
+          min-width: 40px;
+        }
+
+        .notification-persistent .btn-dismiss:hover {
+          background: #5a6268;
+        }
+
+        .notification-empty {
+          background: #e8f5e9;
+          padding: 12px;
+          border-radius: 10px;
+          border-left: 4px solid #4caf50;
+          font-size: 14px;
+          color: #2e7d32;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        /* Thème sombre */
+.dark-theme {
+    background: #1a1a2e !important;
+    color: #e0e0e0 !important;
+}
+.dark-theme .wrapper {
+    background: #1a1a2e !important;
+}
+.dark-theme .container-fluid {
+    background: #1a1a2e !important;
+}
+.dark-theme .task {
+    background: #16213e !important;
+    color: #e0e0e0;
+}
+.dark-theme .task span {
+    color: #e0e0e0;
+}
+.dark-theme #taskList {
+    background: #0f3460 !important;
+}
+.dark-theme .task .info {
+    color: #64b5f6 !important;
+}
+.dark-theme .filter-buttons button {
+    background: #0f3460;
+    color: white;
+}
+.dark-theme .filter-buttons button.active {
+    background: #1a237e !important;
+}
+.dark-theme .filter-buttons button:hover {
+    background: #283593;
+}
+.dark-theme .notification-persistent {
+    background: #16213e;
+    color: #e0e0e0;
+    border-left-color: #ffc107;
+}
+.dark-theme .notification-persistent.expired {
+    background: #4a1a1a;
+    border-left-color: #d32f2f;
+}
+.dark-theme .notification-persistent strong {
+    color: #ffc107 !important;
+}
+.dark-theme .notification-persistent.expired strong {
+    color: #ef5350 !important;
+}
+.dark-theme .notification-empty {
+    background: #1a3a1a;
+    color: #81c784;
+}
+.dark-theme .stats-container {
+    background: #16213e !important;
+    color: #e0e0e0 !important;
+}
+.dark-theme .stats-container h6 {
+    color: #e0e0e0 !important;
+}
+.dark-theme .stats-container div {
+    color: #e0e0e0 !important;
+}
+/* ============================================================
+   STYLES POUR LES CATÉGORIES
+   ============================================================ */
+.category-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 10px;
+  margin: 2px 4px 2px 0;
+  background: #e0e0e0;
+  color: #333;
+  font-weight: 500;
+}
+
+.category-badge.travail { background: #e3f2fd; color: #0d47a1; }
+.category-badge.personnel { background: #f3e5f5; color: #4a148c; }
+.category-badge.urgent { background: #ffebee; color: #b71c1c; }
+.category-badge.courses { background: #e8f5e9; color: #1b5e20; }
+.category-badge.Para-Agendar { background: #e0f7fa; color: #006064; }
+.category-badge.Agendado-Doc { background: #fff3e0; color: #e65100; }
+.category-badge.famille { background: #fce4ec; color: #880e4f; }
+.category-badge.loisirs { background: #fff8e1; color: #f57f17; }
+
+.category-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 8px 0 5px 0;
+  padding: 5px;
+  background: rgba(255,255,255,0.5);
+  border-radius: 8px;
+}
+
+.category-filter button {
+  font-size: 11px;
+  padding: 3px 12px;
+  border-radius: 15px;
+  background: #e0e0e0;
+  color: #333;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.category-filter button:hover {
+  transform: scale(1.05);
+  background: #bdbdbd;
+}
+
+.category-filter button.active-cat {
+  background: #007bff;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+}
+/* ============================================================
+   STYLES POUR LES TÂCHES ÉPINGLÉES
+   ============================================================ */
+.task.pinned {
+    border-left: 6px solid #ff9800 !important;
+    background: #fff8e1 !important;
+    box-shadow: 0 4px 15px rgba(255,152,0,0.3) !important;
+}
+
+.task.pinned .pin-btn {
+    background: #ff9800 !important;
+    color: white !important;
+}
+
+.dark-theme .task.pinned {
+    background: #3e2a00 !important;
+    border-left-color: #ff9800 !important;
+}
+
+.pin-indicator {
+    display: inline-block;
+    color: #ff9800;
+    margin-right: 5px;
+    font-size: 14px;
+}
+/* ============================================================
+   STYLES POUR LE CALENDRIER
+   ============================================================ */
+.calendar-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.dark-theme .calendar-container {
+    background: #16213e;
+    color: #e0e0e0;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    text-align: center;
+}
+
+.calendar-day {
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 14px;
+}
+
+.calendar-day:hover {
+    transform: scale(1.1);
+    background: #e3f2fd;
+}
+
+.calendar-day.today {
+    background: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+.calendar-day.has-tasks {
+    background: #fff3cd;
+    font-weight: bold;
+}
+
+.calendar-day.has-tasks.today {
+    background: #007bff;
+    color: white;
+}
+
+.calendar-day.has-tasks.today::after {
+    content: '●';
+    display: block;
+    font-size: 8px;
+    color: #ff9800;
+}
+
+.calendar-day.has-tasks::after {
+    content: '●';
+    display: block;
+    font-size: 8px;
+    color: #ff9800;
+}
+
+.calendar-day.today::after {
+    content: '●';
+    display: block;
+    font-size: 8px;
+    color: white;
+}
+
+.calendar-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.calendar-nav button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.calendar-nav button:hover {
+    background: #0056b3;
+}
+
+.dark-theme .calendar-day:hover {
+    background: #0f3460;
+}
+
+.dark-theme .calendar-day.has-tasks {
+    background: #3e2a00;
+}
+/* ============================================================
+   STYLES POUR LE MODE HORS LIGNE
+   ============================================================ */
+#connectionStatus {
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+#connectionStatus.online {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+#connectionStatus.offline {
+    background: #ffebee;
+    color: #c62828;
+    animation: pulseOffline 2s ease-in-out infinite;
+}
+
+@keyframes pulseOffline {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.offline-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99999;
+    background: #c62828;
+    color: white;
+    text-align: center;
+    padding: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    animation: slideDown 0.5s ease;
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
+}
+
+.offline-banner .retry-btn {
+    background: white;
+    color: #c62828;
+    border: none;
+    padding: 2px 12px;
+    border-radius: 12px;
+    margin-left: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
   </style>
 </head>
         
@@ -199,6 +614,26 @@
             <button onclick="importBackup()" class="w-100 mt-1">📥 Ajouter</button>
             <div id="message" style="margin-top: 10px; color: green;"></div>
       </div>
+      <div>
+          <div style="margin-top: 5px; padding: 5px; border: 1px solid #ccc; border-radius: 10px; background-color: #f8f9fa;">
+            <button onclick="showStats()" class="w-100 mb-1" style="background:#6c757d;">📊 Statistiques</button>
+            <button onclick="toggleTheme()" class="w-100 mb-1" style="background:#6c757d;">🌙 Thème</button>
+      </div>
+                     <!-- Ajouter ce bouton dans le panneau latéral -->
+        <div style="margin-top: 5px; padding: 5px; border: 1px solid #ccc; border-radius: 10px; background-color: #f8f9fa;">
+            <button onclick="showCalendar()" class="w-100 mb-1">📅 Calendrier</button>
+        </div>
+        <!-- Ajouter ce bouton dans le panneau latéral -->
+        <div style="margin-top: 5px; padding: 5px; border: 1px solid #ccc; border-radius: 10px; background-color: #f8f9fa;">
+            <button onclick="syncTasks()" class="w-100 mb-1">🔄 Synchroniser</button>
+            <div id="connectionStatus" style="font-size:11px;text-align:center;color:#666;">
+                📶 Connecté
+       </div>
+</div>
+      <div>
+          
+      </div>
+    </div>
     </div>
 
     <div class="col-sm-10" style="background-color: rgb(131, 173, 220);">
@@ -213,6 +648,17 @@
         </select>
         <input type="date" id="dateInput">
         <input type="time" id="reminderTimeInput">
+        <input type="text" id="categoryInput" placeholder="🏷️ Catégorie" list="categoryList" style="width:15%;">
+<datalist id="categoryList">
+  <option value="Travail">
+  <option value="Personnel">
+  <option value="Urgent">
+  <option value="Courses">
+  <option value="Para-Agendar">
+  <option value="Agendado-Doc">
+  <option value="Famille">
+  <option value="Loisirs">
+</datalist>
         <button onclick="addTask()">➕ Ajouter</button>
       
         🔍 <input type="text" id="searchInput" placeholder="Rechercher une tâche..." oninput="loadTasks()">
@@ -220,17 +666,23 @@
 
       <div class="filter-section">
     <div class="filter-buttons">
-      <button onclick="setFilter('all')" id="filter-all" class="active">Toutes</button>
-      <button onclick="setFilter('today')" id="filter-today">Aujourd'hui</button>
+      <button onclick="setFilter('today')" id="filter-today" class="active">Aujourd'hui</button>
+      <button onclick="setFilter('all')" id="filter-all" >Toutes</button>
       <button onclick="setFilter('daily')" id="filter-daily">Journalier</button>
       <button onclick="setFilter('monthly')" id="filter-monthly">Mensuelles</button>
       <button onclick="setFilter('yearly')" id="filter-yearly">Annuel</button>
       <button onclick="setFilter('done')" id="filter-done">Accomplies</button>
       <button onclick="setFilter('notDone')" id="filter-notDone">Non accomplies</button>
+      <!-- Ajouter cette section après les filtres existants -->
+   <div class="category-filter" id="categoryFilter">
+  <button onclick="setCategoryFilter('all')" class="active-cat">🏷️ Toutes</button>
+  <!-- Les catégories seront générées dynamiquement -->
+</div>
     </div>
   </div>
 
       <div id="taskList"></div>
+      
     </div>
   </div>
 </div>
@@ -238,17 +690,42 @@
 <!-- Zone pour les notifications dans la page -->
 <div id="notificationContainer" class="notification-banner"></div>
 
+<!-- Zone pour les notifications persistantes -->
+<div id="persistentNotificationsContainer"></div>
+
 <script>
   let currentFilter = 'all';
   let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+  // Ajouter avec les autres variables
+let currentCategory = 'all';
+let categories = JSON.parse(localStorage.getItem("categories") || "[]");
 
   // === SAUVEGARDE AUTOMATIQUE TOUTES LES 5 HEURES ===
   const BACKUP_INTERVAL_MS = 6 * 60 * 60 * 1000;
   const BACKUP_FILENAME = "taches_backup.json";
 
-  function saveTasks() {
+  // Remplacer la fonction saveTasks existante par celle-ci
+function saveTasks() {
+    // Ajouter la date de modification
+    tasks.forEach(task => {
+        if (!task.lastModified) {
+            task.lastModified = new Date().toISOString();
+        }
+    });
+    
     localStorage.setItem("tasks", JSON.stringify(tasks));
-  }
+    localStorage.setItem("categories", JSON.stringify(categories));
+    
+    // Si en ligne et pas déjà en train de synchroniser
+    if (isOnline && !window.isSyncing) {
+        clearTimeout(window.syncTimeout);
+        window.syncTimeout = setTimeout(() => {
+            saveToGoogleDrive();
+        }, 3000);
+    } else if (!isOnline) {
+        pendingSync = true;
+    }
+}
 
   function autoBackupTasks() {
     const data = JSON.stringify(tasks, null, 2);
@@ -342,107 +819,319 @@
     }, 30000);
   }
 
-  // === VÉRIFICATION DES RAPPELS AMÉLIORÉE ===
-  function checkReminders() {
+  // ============================================================
+  // NOUVELLES FONCTIONS POUR LES NOTIFICATIONS PERSISTANTES
+  // ============================================================
 
+  // Fonction pour ajouter une notification persistante
+  function addPersistentNotification(taskIndex, taskText, dueDate, reminderTime) {
+    let notifications = JSON.parse(localStorage.getItem("persistentNotifications") || "[]");
+    
+    const notification = {
+      id: Date.now() + Math.random() * 1000,
+      taskIndex: taskIndex,
+      text: taskText,
+      dueDate: dueDate || new Date().toISOString().split('T')[0],
+      reminderTime: reminderTime || '12:00',
+      createdAt: new Date().toISOString(),
+      completed: false,
+      postponed: false,
+      hourAdded: 0 // Compteur d'heures ajoutées
+    };
+    
+    notifications.push(notification);
+    localStorage.setItem("persistentNotifications", JSON.stringify(notifications));
+    displayPersistentNotifications();
+    console.log("✅ Notification persistante ajoutée:", notification);
+  }
+
+  // Fonction pour afficher les notifications persistantes
+  function displayPersistentNotifications() {
+    const container = document.getElementById('persistentNotificationsContainer');
+    if (!container) {
+      console.error("❌ Container des notifications introuvable");
+      return;
+    }
+    
+    const notifications = JSON.parse(localStorage.getItem("persistentNotifications") || "[]");
+    container.innerHTML = '';
+    
+    // Filtrer les notifications non complétées et non reportées
+    const activeNotifications = notifications.filter(n => !n.completed && !n.postponed);
+    
+    if (activeNotifications.length === 0) {
+      const emptyMsg = document.createElement('div');
+      emptyMsg.className = 'notification-empty';
+      emptyMsg.textContent = '✅ Toutes les notifications sont traitées';
+      container.appendChild(emptyMsg);
+      return;
+    }
+    
+    // Afficher chaque notification persistante
+    activeNotifications.forEach(notification => {
+      const notifDiv = document.createElement('div');
+      notifDiv.className = 'notification-persistent';
+      
+      // Déterminer si la notification est expirée
+      const dueDate = new Date(notification.dueDate);
+      const isExpired = dueDate < new Date();
+      
+      if (isExpired) {
+        notifDiv.classList.add('expired');
+      }
+      
+      notifDiv.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: start; gap: 10px;">
+          <div style="flex: 1;">
+            <strong style="color: ${isExpired ? '#d32f2f' : '#856404'}; font-size: 14px;">
+              ⏰ RAPPEL
+            </strong>
+            <div style="font-size: 15px; margin: 8px 0; font-weight: 500;">
+              ${notification.text}
+            </div>
+            <div style="font-size: 12px; color: #666;">
+              📅 ${formatDate(notification.dueDate)}
+              ⏰ ${notification.reminderTime}
+              ${isExpired ? ' ⚠️ En retard' : ''}
+              ${notification.hourAdded > 0 ? ` (⏱️ +${notification.hourAdded}h)` : ''}
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;">
+          <button class="btn-accomplish" onclick="accomplishNotification(${notification.id})">
+            ✅ Accomplir
+          </button>
+          <button class="btn-add-hour" onclick="addHourNotification(${notification.id})">
+            🕐 +1h
+          </button>
+          <button class="btn-postpone" onclick="postponeNotification(${notification.id})">
+            📅 Pour demain
+          </button>
+          <button class="btn-dismiss" onclick="dismissNotification(${notification.id})">
+            ✕
+          </button>
+        </div>
+      `;
+      
+      container.appendChild(notifDiv);
+    });
+    
+    console.log(`📋 ${activeNotifications.length} notifications persistantes affichées`);
+  }
+
+  // Fonction pour accomplir une notification
+  function accomplishNotification(notificationId) {
+    let notifications = JSON.parse(localStorage.getItem("persistentNotifications") || "[]");
+    const notification = notifications.find(n => n.id === notificationId);
+    
+    if (notification) {
+      notification.completed = true;
+      localStorage.setItem("persistentNotifications", JSON.stringify(notifications));
+      
+      // Marquer la tâche correspondante comme accomplie
+      if (tasks[notification.taskIndex]) {
+        tasks[notification.taskIndex].completed = true;
+        saveTasks();
+        loadTasks();
+        saveToGoogleDrive();
+      }
+      
+      displayPersistentNotifications();
+      showInPageNotification('✅ Tâche accomplie', `"${notification.text}" a été marquée comme accomplie`);
+    }
+  }
+
+  // NOUVELLE FONCTION : Ajouter 1 heure à la notification
+  function addHourNotification(notificationId) {
+    let notifications = JSON.parse(localStorage.getItem("persistentNotifications") || "[]");
+    const notification = notifications.find(n => n.id === notificationId);
+    
+    if (notification) {
+      // Ajouter 1 heure
+      const [hours, minutes] = notification.reminderTime.split(":").map(Number);
+      let newHours = hours + 1;
+      
+      // Si on dépasse 23h, on passe à minuit le lendemain
+      if (newHours >= 24) {
+        newHours = newHours - 24;
+        // Ajouter un jour
+        const tomorrow = new Date(notification.dueDate);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        notification.dueDate = tomorrow.toISOString().split('T')[0];
+      }
+      
+      notification.reminderTime = String(newHours).padStart(2, '0') + ':' + String(minutes).padStart(2, '0');
+      notification.hourAdded = (notification.hourAdded || 0) + 1;
+      
+      // Mettre à jour la tâche correspondante
+      if (tasks[notification.taskIndex]) {
+        tasks[notification.taskIndex].reminderTime = notification.reminderTime;
+        tasks[notification.taskIndex].dueDate = notification.dueDate;
+        saveTasks();
+        loadTasks();
+        saveToGoogleDrive();
+      }
+      
+      localStorage.setItem("persistentNotifications", JSON.stringify(notifications));
+      displayPersistentNotifications();
+      showInPageNotification('🕐 +1 heure', `"${notification.text}" reporté à ${notification.reminderTime}`);
+    }
+  }
+
+  // Fonction pour reporter une notification à demain
+  function postponeNotification(notificationId) {
+    let notifications = JSON.parse(localStorage.getItem("persistentNotifications") || "[]");
+    const notification = notifications.find(n => n.id === notificationId);
+    
+    if (notification) {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const tomorrowStr = tomorrow.toISOString().split('T')[0];
+      
+      notification.dueDate = tomorrowStr;
+      notification.postponed = true;
+      
+      if (tasks[notification.taskIndex]) {
+        tasks[notification.taskIndex].dueDate = tomorrowStr;
+        saveTasks();
+        loadTasks();
+        saveToGoogleDrive();
+      }
+      
+      localStorage.setItem("persistentNotifications", JSON.stringify(notifications));
+      displayPersistentNotifications();
+      showInPageNotification('📅 Reporté à demain', `"${notification.text}" a été reporté au ${formatDate(tomorrowStr)}`);
+    }
+  }
+
+  // Fonction pour ignorer une notification
+  function dismissNotification(notificationId) {
+    let notifications = JSON.parse(localStorage.getItem("persistentNotifications") || "[]");
+    notifications = notifications.filter(n => n.id !== notificationId);
+    localStorage.setItem("persistentNotifications", JSON.stringify(notifications));
+    displayPersistentNotifications();
+  }
+
+  // Fonction pour envoyer une notification persistante
+ function sendPersistentNotification(taskIndex, taskText, dueDate, reminderTime) {
+    playNotificationSound(); // Jouer le son
+    sendNotification('🔔 Rappel', taskText);
+    addPersistentNotification(taskIndex, taskText, dueDate, reminderTime);
+    showInPageNotification('🔔 Rappel', taskText);
+}
+
+  // === VÉRIFICATION DES RAPPELS AMÉLIORÉE AVEC PERSISTANCE ===
+  function checkRemindersWithPersistence() {
     const now = new Date();
-
     const today = now.toISOString().split("T")[0];
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
 
+    tasks.forEach((task, index) => {
+      if (task.completed) return;
+      if (!task.reminderTime) return;
+      if (!task.dueDate) return;
+
+      const [hour, minute] = task.reminderTime.split(":").map(Number);
+      
+      // Vérifier si l'heure correspond (avec une marge de 1 minute)
+      const hourMatch = hour === currentHour;
+      const minuteMatch = minute === currentMinute || minute === currentMinute - 1 || minute === currentMinute + 1;
+      
+      if (!hourMatch || !minuteMatch) return;
+
+      const due = new Date(task.dueDate);
+      let show = false;
+
+      switch(task.repeat){
+        case "day":
+          show = (task.dueDate === today);
+          break;
+        case "daily":
+          show = true;
+          break;
+        case "monthly":
+          show = due.getDate() === now.getDate();
+          break;
+        case "yearly":
+          show = due.getDate() === now.getDate() && due.getMonth() === now.getMonth();
+          break;
+      }
+
+      if(!show) return;
+
+      const key = today + "_" + currentHour + "_" + currentMinute;
+      if(task.lastReminder === key) return;
+
+      // Envoyer une notification persistante
+      sendPersistentNotification(index, task.text, task.dueDate, task.reminderTime);
+      
+      task.lastReminder = key;
+      saveTasks();
+      saveToGoogleDrive();
+    });
+  }
+
+  // === VÉRIFICATION DES RAPPELS ORIGINALE (conservée) ===
+  function checkReminders() {
+    const now = new Date();
+    const today = now.toISOString().split("T")[0];
     const currentHour = now.getHours();
     const currentMinute = now.getMinutes();
 
     tasks.forEach(task => {
-
         if (task.completed) return;
-
         if (!task.reminderTime) return;
 
         const [hour, minute] = task.reminderTime.split(":").map(Number);
-
         if (hour !== currentHour || minute !== currentMinute) return;
 
         const due = new Date(task.dueDate);
-
         let show = false;
 
         switch(task.repeat){
-
-            // Une seule fois
             case "day":
-
                 show = (task.dueDate === today);
-
                 break;
-
-            // Tous les jours
             case "daily":
-
                 show = true;
-
                 break;
-
-            // Chaque mois
             case "monthly":
-
                 show = due.getDate() === now.getDate();
-
                 break;
-
-            // Chaque année
             case "yearly":
-
-                show =
-                    due.getDate() === now.getDate() &&
-                    due.getMonth() === now.getMonth();
-
+                show = due.getDate() === now.getDate() && due.getMonth() === now.getMonth();
                 break;
-
         }
 
         if(!show) return;
 
         const key = today + "_" + currentHour + "_" + currentMinute;
-
         if(task.lastReminder === key) return;
 
-        sendNotification(
-            "🔔 Rappel",
-            task.text
-        );
-
+        sendNotification("🔔 Rappel", task.text);
         task.lastReminder = key;
-
         saveTasks();
         saveToGoogleDrive();
-
     });
+  }
 
-}
   // === SERVICE WORKER - ENREGISTREMENT AMÉLIORÉ ===
   function registerServiceWorker() {
     if (!('serviceWorker' in navigator)) {
       console.warn('⚠️ Service Worker non supporté par ce navigateur');
-      // Demander la permission pour les notifications classiques
       requestNotificationPermission();
       return;
     }
 
-    // Essayer d'enregistrer depuis un fichier externe
     navigator.serviceWorker.register('service-worker.js')
       .then(function(registration) {
         console.log('✅ Service Worker enregistré avec succès');
-        
-        // Demander la permission après enregistrement
         requestNotificationPermission();
-        
-        // Vérifier les mises à jour
         registration.update();
       })
       .catch(function(error) {
         console.warn('⚠️ Échec de l\'enregistrement SW, utilisation du fallback:', error);
-        
-        // Fallback: enregistrer un SW inline
         registerInlineServiceWorker();
       });
   }
@@ -513,12 +1202,10 @@
       return;
     }
 
-    // Demander la permission
     Notification.requestPermission()
       .then(function(permission) {
         if (permission === 'granted') {
           console.log('✅ Permission notifications accordée par l\'utilisateur');
-          // Envoyer une notification de test
           setTimeout(() => {
             sendNotification('✅ Notifications activées', 'Vous recevrez les rappels de tâches');
           }, 1000);
@@ -541,71 +1228,109 @@
     saveToGoogleDrive();
   }
 
-  function addTask() {
-    let text = document.getElementById("taskInput").value.trim();
-    if (!text) return;
-    text = text.charAt(0).toUpperCase() + text.slice(1);
+  // Dans addTask(), ajouter la catégorie
+function addTask() {
+  let text = document.getElementById("taskInput").value.trim();
+  if (!text) return;
+  text = text.charAt(0).toUpperCase() + text.slice(1);
 
-    const repeat = document.getElementById("repeatSelect").value;
-    const dueDate = document.getElementById("dateInput").value;
-    const reminderTime = document.getElementById("reminderTimeInput").value;
-    const taskDate = dueDate || "";
-    
-    
-    const task = {
+  const repeat = document.getElementById("repeatSelect").value;
+  const dueDate = document.getElementById("dateInput").value;
+  const reminderTime = document.getElementById("reminderTimeInput").value;
+  const category = document.getElementById("categoryInput").value.trim();
 
+  // Sauvegarder l'état pour undo
+  saveState();
+
+  const task = {
     text,
-
     repeat,
-
-    dueDate: taskDate,
-
-    reminderTime,
-
-    completed:false,
-
-    lastReminder:null
-
-};
-    tasks.push(task);
-    saveTasks();
-    saveToGoogleDrive();
-
-    document.getElementById("taskInput").value = "";
-    document.getElementById("dateInput").value = "";
-    document.getElementById("reminderTimeInput").value = "";
-    loadTasks();
-    saveToGoogleDrive();
+    dueDate: dueDate || "",
+    reminderTime: reminderTime || "",
+    completed: false,
+    lastReminder: null,
+    category: category ? category.charAt(0).toUpperCase() + category.slice(1).toLowerCase() : "",
+    categories: category ? [category.charAt(0).toUpperCase() + category.slice(1).toLowerCase()] : [],
+    createdAt: new Date().toISOString()
+  };
+  
+  tasks.push(task);
+  
+  // Ajouter la catégorie à la liste globale
+  if (category) {
+    const cat = category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+    if (!categories.includes(cat)) {
+      categories.push(cat);
+    }
   }
+  
+  saveTasks();
+  saveToGoogleDrive();
+
+  document.getElementById("taskInput").value = "";
+  document.getElementById("dateInput").value = "";
+  document.getElementById("reminderTimeInput").value = "";
+  document.getElementById("categoryInput").value = "";
+  loadTasks();
+  showInPageNotification('✅ Tâche ajoutée', `"${text}" ajoutée avec succès`);
+}
+
+// Filtrer par catégorie
+function matchesCategory(task) {
+  if (currentCategory === 'all') return true;
+  if (task.category === currentCategory) return true;
+  if (task.categories && task.categories.includes(currentCategory)) return true;
+  return false;
+}
 
   function toggleTask(index) {
     tasks[index].completed = !tasks[index].completed;
     saveTasks();
-    loadTasks();        // Sauvegarde locale
-    saveToGoogleDrive();  // Sauvegarde sur Google Drive
+    loadTasks();
+    saveToGoogleDrive();
   }
 
   function deleteTask(index) {
+    if (!confirm(`Supprimer la tâche "${tasks[index].text}" ?`)) return;
     tasks.splice(index, 1);
     saveTasks();
-    loadTasks();        // Sauvegarde locale
-    saveToGoogleDrive();  // Sauvegarde sur Google Drive
+    loadTasks();
+    saveToGoogleDrive();
   }
 
-  function editTask(index) {
-    const task = tasks[index];
-    const newText = prompt("Modifier la tâche :", task.text);
-    if (newText === null || newText.trim() === "") return;
+  // Dans editTask(), ajouter la gestion des catégories
+function editTask(index) {
+  const task = tasks[index];
+  const newText = prompt("Modifier la tâche :", task.text);
+  if (newText === null || newText.trim() === "") return;
 
-    task.text = newText.trim();
-    task.repeat = prompt("Rappel (daily, monthly, yearly) :", task.repeat) || task.repeat;
-    task.dueDate = prompt("Date (YYYY-MM-DD) :", task.dueDate) || task.dueDate;
-    task.reminderTime = prompt("Heure de rappel (HH:MM) :", task.reminderTime) || task.reminderTime;
+  // Sauvegarder l'état pour undo
+  saveState();
 
-    saveTasks();
-    loadTasks();         // Sauvegarde locale
-    saveToGoogleDrive();  // Sauvegarde sur Google Drive
+  task.text = newText.trim();
+  task.repeat = prompt("Rappel (day, daily, monthly, yearly) :", task.repeat) || task.repeat;
+  task.dueDate = prompt("Date (YYYY-MM-DD) :", task.dueDate) || task.dueDate;
+  task.reminderTime = prompt("Heure de rappel (HH:MM) :", task.reminderTime) || task.reminderTime;
+  
+  // Gestion des catégories
+  const currentCat = task.categories ? task.categories.join(', ') : '';
+  const newCat = prompt("Catégories (séparées par des virgules) :", currentCat);
+  if (newCat !== null && newCat.trim() !== "") {
+    const catList = newCat.split(',').map(c => c.trim().charAt(0).toUpperCase() + c.trim().slice(1).toLowerCase());
+    task.categories = catList.filter(c => c !== '');
+    task.category = task.categories.length > 0 ? task.categories[0] : '';
+    
+    // Ajouter les nouvelles catégories à la liste globale
+    task.categories.forEach(c => {
+      if (!categories.includes(c)) categories.push(c);
+    });
   }
+
+  saveTasks();
+  loadTasks();
+  saveToGoogleDrive();
+  showInPageNotification('✏️ Modifiée', 'Tâche mise à jour');
+}
 
   function matchesFilter(task) {
     const today = new Date().toISOString().split("T")[0];
@@ -622,6 +1347,7 @@
   }
 
   function formatDate(dateString) {
+    if (!dateString) return "Date inconnue";
     const date = new Date(dateString);
     return date.toLocaleDateString('fr-FR');
   }
@@ -638,46 +1364,218 @@
     return !task.completed || currentFilter === "done";
   }
 
-  function loadTasks() {
+  // ============================================================
+  // HISTORIQUE UNDO / REDO
+  // ============================================================
+  let history = [];
+  let historyIndex = -1;
+  const MAX_HISTORY = 50;
+
+  function saveState() {
+    if (historyIndex < history.length - 1) {
+      history = history.slice(0, historyIndex + 1);
+    }
+    history.push(JSON.stringify(tasks));
+    if (history.length > MAX_HISTORY) {
+      history.shift();
+    }
+    historyIndex = history.length - 1;
+  }
+
+  function undo() {
+    if (historyIndex > 0) {
+      historyIndex--;
+      tasks = JSON.parse(history[historyIndex]);
+      saveTasks();
+      loadTasks();
+      showInPageNotification('↩️ Annuler', 'Action annulée');
+    }
+  }
+
+  function redo() {
+    if (historyIndex < history.length - 1) {
+      historyIndex++;
+      tasks = JSON.parse(history[historyIndex]);
+      saveTasks();
+      loadTasks();
+      showInPageNotification('↪️ Rétablir', 'Action rétablie');
+    }
+  }
+
+  // ============================================================
+  // FONCTIONS POUR LES CATÉGORIES
+  // ============================================================
+
+  // Ajouter une catégorie à une tâche
+  function addCategoryToTask(index, category) {
+    if (!category || category.trim() === '') return;
+    if (!tasks[index].categories) tasks[index].categories = [];
+    const cat = category.trim().charAt(0).toUpperCase() + category.trim().slice(1).toLowerCase();
+    
+    if (!tasks[index].categories.includes(cat)) {
+      tasks[index].categories.push(cat);
+      tasks[index].category = cat; // Catégorie principale
+      
+      // Ajouter à la liste globale des catégories
+      if (!categories.includes(cat)) {
+        categories.push(cat);
+      }
+      saveTasks();
+      loadTasks();
+      showInPageNotification('🏷️ Catégorie ajoutée', `"${cat}" ajoutée à la tâche`);
+    }
+  }
+
+  // Supprimer une catégorie d'une tâche
+  function removeCategoryFromTask(index, category) {
+    if (!tasks[index].categories) return;
+    tasks[index].categories = tasks[index].categories.filter(c => c !== category);
+    if (tasks[index].category === category) {
+      tasks[index].category = tasks[index].categories.length > 0 ? tasks[index].categories[0] : '';
+    }
+    saveTasks();
+    loadTasks();
+    showInPageNotification('🏷️ Catégorie supprimée', `"${category}" retirée de la tâche`);
+  }
+
+  // Filtrer par catégorie
+  function setCategoryFilter(category) {
+    currentCategory = category;
+    document.querySelectorAll('.category-filter button').forEach(btn => btn.classList.remove('active-cat'));
+    
+    const btns = document.querySelectorAll('.category-filter button');
+    btns.forEach(btn => {
+      if (btn.textContent === category || (category === 'all' && btn.textContent === '🏷️ Toutes')) {
+        btn.classList.add('active-cat');
+      }
+    });
+    loadTasks();
+    showInPageNotification('🏷️ Filtre', `Filtre: ${category === 'all' ? 'Toutes les catégories' : category}`);
+  }
+
+  // Mettre à jour l'affichage des filtres de catégories
+  function updateCategoryFilter() {
+    const container = document.getElementById('categoryFilter');
+    if (!container) return;
+    
+    // Garder uniquement le bouton "Toutes" et les catégories existantes
+    let html = '<button onclick="setCategoryFilter(\'all\')" class="active-cat">🏷️ Toutes</button>';
+    
+    categories.forEach(cat => {
+      html += `<button onclick="setCategoryFilter('${cat}')">${cat}</button>`;
+    });
+    
+    container.innerHTML = html;
+    
+    // Réactiver le filtre actuel
+    document.querySelectorAll('.category-filter button').forEach(btn => {
+      if (btn.textContent === currentCategory || (currentCategory === 'all' && btn.textContent === '🏷️ Toutes')) {
+        btn.classList.add('active-cat');
+      }
+    });
+  }
+
+  // Obtenir les catégories d'une tâche pour l'affichage
+  function getCategoryBadges(task) {
+    if (!task.categories || task.categories.length === 0) return '';
+    
+    return task.categories.map(cat => 
+      `<span class="category-badge ${cat.toLowerCase()}">🏷️ ${cat}</span>`
+    ).join(' ');
+  }
+
+  // Nettoyer les catégories inutilisées
+  function cleanCategories() {
+    const usedCategories = new Set();
+    tasks.forEach(task => {
+      if (task.categories) {
+        task.categories.forEach(c => usedCategories.add(c));
+      }
+      if (task.category) usedCategories.add(task.category);
+    });
+    
+    categories = categories.filter(c => usedCategories.has(c));
+    saveTasks();
+    updateCategoryFilter();
+    showInPageNotification('🧹 Nettoyage', 'Catégories inutilisées supprimées');
+  }
+
+  // Exporter les catégories
+  function exportCategories() {
+    const data = JSON.stringify(categories, null, 2);
+    const blob = new Blob([data], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "categories_backup.json";
+    a.click();
+  }
+
+  // Dans la fonction loadTasks(), ajouter les catégories à l'affichage
+// Remplacer la partie filteredTasks par :
+function loadTasks() {
     const taskList = document.getElementById("taskList");
     taskList.innerHTML = "";
 
     const search = document.getElementById("searchInput").value.toLowerCase();
 
-    const filteredTasks = tasks
-      .map((task, index) => ({ task, index }))
-      .filter(({ task }) => matchesFilter(task) && matchesSearch(task) && shouldDisplayTask(task));
+    // Filtrer et trier
+    let filteredTasks = tasks
+        .map((task, index) => ({ task, index }))
+        .filter(({ task }) => matchesFilter(task) && matchesCategory(task) && matchesSearch(task) && shouldDisplayTask(task));
+
+    // Trier : épinglées en premier
+    filteredTasks.sort((a, b) => {
+        if (a.task.pinned && !b.task.pinned) return -1;
+        if (!a.task.pinned && b.task.pinned) return 1;
+        return 0;
+    });
+
+    if (filteredTasks.length === 0) {
+        taskList.innerHTML = '<div style="text-align:center;color:#666;padding:20px;">Aucune tâche trouvée</div>';
+    }
 
     filteredTasks.forEach(({ task, index }) => {
-      const taskDiv = document.createElement("div");
-      taskDiv.className = "task";
-      if (task.completed) taskDiv.classList.add("completed");
+        const taskDiv = document.createElement("div");
+        taskDiv.className = "task";
+        if (task.completed) taskDiv.classList.add("completed");
+        if (task.pinned) taskDiv.classList.add("pinned");
 
-      if (task.repeat === "daily") taskDiv.classList.add("priority-daily");
-      if (task.repeat === "monthly") taskDiv.classList.add("priority-monthly");
-      if (task.repeat === "yearly") taskDiv.classList.add("priority-yearly");
+        if (task.repeat === "daily") taskDiv.classList.add("priority-daily");
+        if (task.repeat === "monthly") taskDiv.classList.add("priority-monthly");
+        if (task.repeat === "yearly") taskDiv.classList.add("priority-yearly");
 
-      taskDiv.innerHTML = `
-        <span>
-          ${task.text}
-          <div class="info">
-            ${task.dueDate ? `📅 ${formatDate(task.dueDate)} ` : ""}
-            ${task.repeat ? `🔁 ${getRepeatLabel(task.repeat)}` : ""}
-            ${task.reminderTime ? `⏰ ${task.reminderTime}` : ""}
-          </div>
-        </span>
-        <div class="buttons">
-          <button onclick="toggleTask(${index})">✅</button>
-          <button onclick="editTask(${index})">✏️</button>
-          <button onclick="deleteTask(${index})">🗑️</button>
-        </div>
-      `;
+        const categoryBadges = getCategoryBadges(task);
+        const pinIcon = task.pinned ? '📌 ' : '';
 
-      taskList.appendChild(taskDiv);
+        taskDiv.innerHTML = `
+            <span>
+                <span class="pin-indicator">${task.pinned ? '📌' : ''}</span>
+                ${task.text}
+                ${categoryBadges}
+                <div class="info">
+                    ${task.dueDate ? `📅 ${formatDate(task.dueDate)} ` : ""}
+                    ${task.repeat ? `🔁 ${getRepeatLabel(task.repeat)}` : ""}
+                    ${task.reminderTime ? `⏰ ${task.reminderTime}` : ""}
+                </div>
+            </span>
+            <div class="buttons">
+                <button class="pin-btn" onclick="togglePinTask(${index})" title="Épingler/Désépingler">
+                    ${task.pinned ? '📌' : '📍'}
+                </button>
+                <button onclick="toggleTask(${index})">✅</button>
+                <button onclick="editTask(${index})">✏️</button>
+                <button onclick="deleteTask(${index})">🗑️</button>
+            </div>
+        `;
+
+        taskList.appendChild(taskDiv);
     });
-    saveTasks();          // Sauvegarde locale
-    saveToGoogleDrive();  // Sauvegarde sur Google Drive
-  }
+    
+    saveTasks();
+    saveToGoogleDrive();
+    displayPersistentNotifications();
+    updateCategoryFilter();
+}
 
   function backupTasks() {
     const data = JSON.stringify(tasks, null, 2);
@@ -712,121 +1610,616 @@
   }
 
   // === INITIALISATION ===
-  document.addEventListener('DOMContentLoaded', function() {
+  // === INITIALISATION ===
+document.addEventListener('DOMContentLoaded', function() {
     // 1. Enregistrer le Service Worker
     registerServiceWorker();
 
     // 2. Charger les tâches
     loadTasks();
 
-    // 3. Vérifier les rappels toutes les 30 secondes
-    setInterval(checkReminders, 30000);
+    // 3. Vérifier les rappels toutes les 30 secondes (version avec persistance)
+    setInterval(checkRemindersWithPersistence, 30000);
     
     // 4. Vérification immédiate
-    setTimeout(checkReminders, 2000);
+    setTimeout(checkRemindersWithPersistence, 2000);
 
-    // 5. Vérifier si la page a été ouverte depuis une notification
+    // 5. Afficher les notifications persistantes au chargement
+    setTimeout(displayPersistentNotifications, 500);
+
+    // Mettre à jour les catégories
+    updateCategoryFilter();
+
+    setInterval(() => {
+      saveToGoogleDrive();
+    }, 3600000);
+
+    // 6. Initialiser la gestion de la connexion (Mode Hors Ligne)
+    initConnectionManager();
+    
+    // 7. Synchroniser au démarrage si en ligne
+    if (navigator.onLine) {
+        setTimeout(syncTasks, 3000);
+    }
+
+    // 8. Vérifier si la page a été ouverte depuis une notification
     if (window.location.search.includes('from=notification')) {
       showInPageNotification('👋 Bienvenue', 'Vous avez été redirigé depuis une notification');
     }
 
-    console.log("✅ Application chargée avec notifications universelles");
+    console.log("✅ Application chargée avec épinglage, calendrier, catégories, notifications persistantes et mode hors ligne");
   });
+
 // Sauvegarde automatique vers Google Drive
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUsXFGy0QNc9yzoLXMWxO2pK5UnQAjhCu83D_QgoWJXnkp_6oJKWRkU32VFpY8yVeBzQ/exec";
 
-function saveToGoogleDrive() {
-  const data = JSON.stringify(tasks, null, 2);
-  
-  fetch(APPS_SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors', // Important pour éviter les CORS
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: data
-  })
-  .then(response => response.json())
-  .then(result => {
-    if (result.success) {
-      console.log('✅ Sauvegarde Google Drive réussie');
-      document.getElementById("message").innerText = "✅ Sauvegardé sur Google Drive !";
-      setTimeout(() => document.getElementById("message").innerText = "", 3000);
-    } else {
-      console.error('❌ Erreur Google Drive:', result.error);
-    }
-  })
-  .catch(error => {
-    console.error('❌ Erreur de connexion:', error);
-  });
-}
+  function saveToGoogleDrive() {
+    const data = JSON.stringify(tasks, null, 2);
+    
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: data
+    })
+    .then(response => response.json())
+    .then(result => {
+      if (result.success) {
+        console.log('✅ Sauvegarde Google Drive réussie');
+        document.getElementById("message").innerText = "✅ Sauvegardé sur Google Drive !";
+        setTimeout(() => document.getElementById("message").innerText = "", 3000);
+      } else {
+        console.error('❌ Erreur Google Drive:', result.error);
+      }
+    })
+    .catch(error => {
+      console.error('❌ Erreur de connexion:', error);
+    });
+  }
 
-// Modifier la sauvegarde automatique pour utiliser Google Drive
-setInterval(() => {
-  autoBackupTasks(); // Sauvegarde locale
-  saveToGoogleDrive(); // Sauvegarde Google Drive
-}, BACKUP_INTERVAL_MS);
+  // Modifier la sauvegarde automatique pour utiliser Google Drive
+  setInterval(() => {
+    autoBackupTasks();
+    saveToGoogleDrive();
+  }, BACKUP_INTERVAL_MS);
 
+  // === SAUVEGARDE VERS GOOGLE DRIVE ===
+  const DRIVE_FOLDER_ID = "1tj3sr5iVP7t4CbNHac3xawSAOze24Fy2";
 
-
-// === SAUVEGARDE VERS GOOGLE DRIVE ===
-const DRIVE_FOLDER_ID = "1tj3sr5iVP7t4CbNHac3xawSAOze24Fy2";
-
-async function saveToGoogleDrive() {
-
+  async function saveToGoogleDriveAlt() {
     try{
-
-        const response = await fetch("VOTRE_URL_WEBAPP",{
-
-            method:"POST",
-
-            headers:{
-                "Content-Type":"application/json"
-            },
-
-            body:JSON.stringify(tasks)
-
-        });
-
-        const result = await response.json();
-
-        console.log(result);
-
-        if(result.success){
-
-            console.log("✅ Sauvegarde Drive OK");
-
-        }else{
-
-            console.error(result.error);
-
-        }
-
+      const response = await fetch("VOTRE_URL_WEBAPP",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify(tasks)
+      });
+      const result = await response.json();
+      console.log(result);
+      if(result.success){
+        console.log("✅ Sauvegarde Drive OK");
+      }else{
+        console.error(result.error);
+      }
     }catch(err){
-
-        console.error(err);
-
+      console.error(err);
     }
+  }
 
-}
-// Modifier la fonction de sauvegarde automatique
-function autoBackupTasks() {
-  // 1. Sauvegarde locale (dossier Téléchargements)
-  const data = JSON.stringify(tasks, null, 2);
-  const blob = new Blob([data], { type: "application/json" });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "taches_backup.json";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  // Modifier la fonction de sauvegarde automatique
+  function autoBackupTasksWithDrive() {
+    const data = JSON.stringify(tasks, null, 2);
+    const blob = new Blob([data], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "taches_backup.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    saveToGoogleDrive();
+    console.log("✅ Sauvegarde auto effectuée à", new Date().toLocaleString());
+  }
   
-  // 2. Sauvegarde vers Google Drive
-  saveToGoogleDrive();
+  function showStats() {
+    const total = tasks.length;
+    const completed = tasks.filter(t => t.completed).length;
+    const pending = total - completed;
+    const expired = tasks.filter(t => {
+        if (t.completed) return false;
+        if (!t.dueDate) return false;
+        return new Date(t.dueDate) < new Date();
+    }).length;
+    const today = tasks.filter(t => t.dueDate === new Date().toISOString().split('T')[0]).length;
+    
+    // Compter par catégorie
+    const categoryCount = {};
+    tasks.forEach(t => {
+      if (t.category) {
+        categoryCount[t.category] = (categoryCount[t.category] || 0) + 1;
+      }
+    });
+    const categoriesList = Object.keys(categoryCount).map(c => 
+      `<span class="category-badge ${c.toLowerCase()}">${c}: ${categoryCount[c]}</span>`
+    ).join(' ');
+    
+    // Supprimer l'ancien stats si présent
+    const oldStats = document.querySelector('.stats-container');
+    if (oldStats) oldStats.remove();
+    
+    const statsDiv = document.createElement('div');
+    statsDiv.className = 'stats-container';
+    statsDiv.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        z-index: 9999;
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        max-width: 280px;
+        animation: slideIn 0.5s ease;
+    `;
+    statsDiv.innerHTML = `
+        <h6 style="margin:0 0 8px 0;color:#2c3e50;">📊 Statistiques</h6>
+        <div style="font-size:12px; line-height:1.8;color:#333;">
+            <div>📝 Total: <strong>${total}</strong></div>
+            <div>✅ Accomplies: <strong style="color:#4caf50;">${completed}</strong></div>
+            <div>⏳ En attente: <strong style="color:#ff9800;">${pending}</strong></div>
+            <div>⚠️ Expirées: <strong style="color:#d32f2f;">${expired}</strong></div>
+            <div>📅 Aujourd'hui: <strong style="color:#2196f3;">${today}</strong></div>
+            <div style="margin-top:5px;">🏷️ ${categoriesList || 'Aucune catégorie'}</div>
+            <div style="margin-top:8px; height:6px; background:#e0e0e0; border-radius:3px; overflow:hidden;">
+                <div style="height:100%; width:${total ? (completed/total)*100 : 0}%; 
+                     background:linear-gradient(90deg,#4caf50,#8bc34a); border-radius:3px; transition:width 0.5s;"></div>
+            </div>
+            <div style="font-size:10px;color:#666;margin-top:3px;">${Math.round(total ? (completed/total)*100 : 0)}% complété</div>
+        </div>
+        <button onclick="this.parentElement.remove()" style="position:absolute;top:5px;right:5px;background:#dc3545;color:white;border:none;border-radius:50%;width:20px;height:20px;font-size:12px;cursor:pointer;line-height:1;">✕</button>
+    `;
+    document.body.appendChild(statsDiv);
+    
+    // Auto-supprimer après 15 secondes
+    setTimeout(() => {
+        if (statsDiv.parentElement) statsDiv.remove();
+    }, 15000);
+  }
   
-  console.log("✅ Sauvegarde auto effectuée à", new Date().toLocaleString());
+  function playNotificationSound() {
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        // Premier bip
+        const oscillator1 = audioContext.createOscillator();
+        const gainNode1 = audioContext.createGain();
+        oscillator1.connect(gainNode1);
+        gainNode1.connect(audioContext.destination);
+        oscillator1.frequency.value = 880;
+        oscillator1.type = 'sine';
+        gainNode1.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode1.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+        oscillator1.start(audioContext.currentTime);
+        oscillator1.stop(audioContext.currentTime + 0.3);
+        
+        // Deuxième bip (plus aigu)
+        setTimeout(() => {
+            const oscillator2 = audioContext.createOscillator();
+            const gainNode2 = audioContext.createGain();
+            oscillator2.connect(gainNode2);
+            gainNode2.connect(audioContext.destination);
+            oscillator2.frequency.value = 1100;
+            oscillator2.type = 'sine';
+            gainNode2.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+            oscillator2.start(audioContext.currentTime);
+            oscillator2.stop(audioContext.currentTime + 0.2);
+        }, 200);
+        
+        // Troisième bip (grave)
+        setTimeout(() => {
+            const oscillator3 = audioContext.createOscillator();
+            const gainNode3 = audioContext.createGain();
+            oscillator3.connect(gainNode3);
+            gainNode3.connect(audioContext.destination);
+            oscillator3.frequency.value = 660;
+            oscillator3.type = 'sine';
+            gainNode3.gain.setValueAtTime(0.2, audioContext.currentTime);
+            gainNode3.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+            oscillator3.start(audioContext.currentTime);
+            oscillator3.stop(audioContext.currentTime + 0.4);
+        }, 400);
+    } catch(e) {
+        console.log('🔇 Son non disponible');
+    }
+  }
+  
+  function toggleTheme() {
+    const isDark = document.body.classList.toggle('dark-theme');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    showInPageNotification('🎨 Thème', isDark ? 'Mode sombre activé' : 'Mode clair activé');
+    // Mettre à jour le bouton
+    const btn = document.querySelector('[onclick="toggleTheme()"]');
+    if (btn) btn.textContent = isDark ? '☀️ Clair' : '🌙 Sombre';
+  }
+
+  function loadTheme() {
+    const theme = localStorage.getItem('theme');
+    if (theme === 'dark') {
+        document.body.classList.add('dark-theme');
+        const btn = document.querySelector('[onclick="toggleTheme()"]');
+        if (btn) btn.textContent = '☀️ Clair';
+    }
+  }
+  // ============================================================
+// FONCTIONS POUR L'ÉPINGLAGE
+// ============================================================
+
+// Basculer l'épingle d'une tâche
+function togglePinTask(index) {
+    tasks[index].pinned = !tasks[index].pinned;
+    saveTasks();
+    loadTasks();
+    showInPageNotification('📌 Épinglage', 
+        tasks[index].pinned ? `"${tasks[index].text}" épinglée ✅` : `"${tasks[index].text}" désépinglée`);
 }
+
+// Afficher uniquement les tâches épinglées
+function showPinnedTasks() {
+    const pinnedTasks = tasks.filter(t => t.pinned);
+    if (pinnedTasks.length === 0) {
+        showInPageNotification('📌 Épinglées', 'Aucune tâche épinglée');
+        return;
+    }
+    
+    const message = pinnedTasks.map((t, i) => 
+        `${i+1}. ${t.text} ${t.dueDate ? '📅 ' + formatDate(t.dueDate) : ''}`
+    ).join('\n');
+    
+    showInPageNotification(`📌 Tâches épinglées (${pinnedTasks.length})`, message);
+}
+
+// Obtenir les tâches triées (épinglées en premier)
+function getSortedTasks() {
+    return [...tasks].sort((a, b) => {
+        if (a.pinned && !b.pinned) return -1;
+        if (!a.pinned && b.pinned) return 1;
+        return 0;
+    });
+}
+// ============================================================
+// FONCTIONS POUR LE CALENDRIER
+// ============================================================
+
+let calendarMonth = new Date().getMonth();
+let calendarYear = new Date().getFullYear();
+
+// Afficher le calendrier
+function showCalendar() {
+    // Supprimer l'ancien calendrier s'il existe
+    const oldCalendar = document.querySelector('.calendar-container');
+    if (oldCalendar) oldCalendar.remove();
+    
+    renderCalendar();
+}
+
+// Rendre le calendrier
+function renderCalendar() {
+    const now = new Date();
+    const firstDay = new Date(calendarYear, calendarMonth, 1).getDay();
+    const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
+    const monthName = new Date(calendarYear, calendarMonth).toLocaleString('fr-FR', { month: 'long' });
+    
+    let html = `
+        <div class="calendar-container">
+            <div class="calendar-nav">
+                <button onclick="changeMonth(-1)">◀</button>
+                <h5 style="margin:0;text-transform:capitalize;">${monthName} ${calendarYear}</h5>
+                <button onclick="changeMonth(1)">▶</button>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center;margin-bottom:10px;">
+    `;
+    
+    const days = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+    days.forEach(d => html += `<div style="font-weight:bold;font-size:12px;">${d}</div>`);
+    
+    html += `</div><div class="calendar-grid">`;
+    
+    // Ajuster pour commencer par Lundi
+    const startOffset = firstDay === 0 ? 6 : firstDay - 1;
+    
+    // Espaces vides
+    for (let i = 0; i < startOffset; i++) {
+        html += `<div class="calendar-day" style="opacity:0.3;">${i - startOffset + 1}</div>`;
+    }
+    
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${calendarYear}-${String(calendarMonth+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+        const tasksToday = tasks.filter(t => t.dueDate === dateStr && !t.completed);
+        const hasTasks = tasksToday.length > 0;
+        const isToday = day === now.getDate() && 
+                       calendarMonth === now.getMonth() && 
+                       calendarYear === now.getFullYear();
+        
+        let classes = 'calendar-day';
+        if (isToday) classes += ' today';
+        if (hasTasks) classes += ' has-tasks';
+        
+        html += `
+            <div class="${classes}" 
+                 onclick="showTasksForDate('${dateStr}')"
+                 title="${hasTasks ? tasksToday.map(t => t.text).join('\n') : 'Aucune tâche'}">
+                ${day}
+                ${hasTasks ? `<div style="font-size:8px;color:${isToday ? 'white' : '#ff9800'};">●</div>` : ''}
+            </div>
+        `;
+    }
+    
+    html += `
+            </div>
+            <div style="margin-top:15px;display:flex;gap:5px;">
+                <button onclick="document.querySelector('.calendar-container').remove()" 
+                        style="flex:1;background:#6c757d;color:white;border:none;padding:8px;border-radius:8px;">Fermer</button>
+                <button onclick="showTodayTasks()" 
+                        style="flex:1;background:#007bff;color:white;border:none;padding:8px;border-radius:8px;">📅 Aujourd'hui</button>
+            </div>
+        </div>
+    `;
+    
+    const container = document.createElement('div');
+    container.innerHTML = html;
+    document.body.appendChild(container.firstElementChild);
+}
+
+// Changer de mois
+function changeMonth(delta) {
+    calendarMonth += delta;
+    if (calendarMonth > 11) {
+        calendarMonth = 0;
+        calendarYear++;
+    } else if (calendarMonth < 0) {
+        calendarMonth = 11;
+        calendarYear--;
+    }
+    renderCalendar();
+}
+
+// Afficher les tâches d'une date
+function showTasksForDate(dateStr) {
+    const tasksToday = tasks.filter(t => t.dueDate === dateStr && !t.completed);
+    const completedToday = tasks.filter(t => t.dueDate === dateStr && t.completed);
+    
+    if (tasksToday.length === 0 && completedToday.length === 0) {
+        showInPageNotification('📅 ' + formatDate(dateStr), 'Aucune tâche pour cette date');
+        return;
+    }
+    
+    let message = '';
+    if (tasksToday.length > 0) {
+        message += '⏳ En attente:\n' + tasksToday.map((t, i) => `${i+1}. ${t.text}`).join('\n');
+    }
+    if (completedToday.length > 0) {
+        if (message) message += '\n\n';
+        message += '✅ Accomplies:\n' + completedToday.map((t, i) => `${i+1}. ${t.text}`).join('\n');
+    }
+    
+    showInPageNotification(`📅 ${formatDate(dateStr)} (${tasksToday.length + completedToday.length} tâches)`, message);
+}
+
+// Afficher les tâches d'aujourd'hui
+function showTodayTasks() {
+    const today = new Date().toISOString().split('T')[0];
+    showTasksForDate(today);
+    // Fermer le calendrier
+    const calendar = document.querySelector('.calendar-container');
+    if (calendar) calendar.remove();
+}
+
+// Aller à aujourd'hui dans le calendrier
+function goToToday() {
+    const now = new Date();
+    calendarMonth = now.getMonth();
+    calendarYear = now.getFullYear();
+    renderCalendar();
+}
+// ============================================================
+// FONCTIONS POUR LE MODE HORS LIGNE
+// ============================================================
+
+// État de la connexion
+let isOnline = navigator.onLine;
+let pendingSync = false;
+let syncInterval = null;
+
+// Initialiser la gestion de la connexion
+function initConnectionManager() {
+    updateConnectionStatus();
+    
+    // Écouter les événements de connexion
+    window.addEventListener('online', function() {
+        isOnline = true;
+        updateConnectionStatus();
+        showInPageNotification('📶 Connecté', 'Vous êtes de nouveau en ligne');
+        
+        // Synchroniser automatiquement
+        if (pendingSync) {
+            syncTasks();
+        }
+    });
+    
+    window.addEventListener('offline', function() {
+        isOnline = false;
+        updateConnectionStatus();
+        showOfflineBanner();
+        showInPageNotification('📶 Hors ligne', 'Mode hors ligne activé - les modifications seront synchronisées plus tard');
+    });
+    
+    // Vérifier périodiquement la connexion
+    setInterval(checkConnection, 30000);
+}
+
+// Vérifier la connexion
+function checkConnection() {
+    const wasOnline = isOnline;
+    isOnline = navigator.onLine;
+    
+    if (wasOnline !== isOnline) {
+        updateConnectionStatus();
+        if (isOnline) {
+            showInPageNotification('📶 Connecté', 'Connexion rétablie');
+            if (pendingSync) {
+                syncTasks();
+            }
+            hideOfflineBanner();
+        } else {
+            showOfflineBanner();
+        }
+    }
+}
+
+// Mettre à jour le statut de connexion
+function updateConnectionStatus() {
+    const statusEl = document.getElementById('connectionStatus');
+    if (!statusEl) return;
+    
+    if (isOnline) {
+        statusEl.textContent = '📶 Connecté';
+        statusEl.className = 'online';
+    } else {
+        statusEl.textContent = '📶 Hors ligne';
+        statusEl.className = 'offline';
+    }
+}
+
+// Afficher la bannière hors ligne
+function showOfflineBanner() {
+    const existing = document.querySelector('.offline-banner');
+    if (existing) return;
+    
+    const banner = document.createElement('div');
+    banner.className = 'offline-banner';
+    banner.id = 'offlineBanner';
+    banner.innerHTML = `
+        📶 Mode hors ligne - Les modifications seront synchronisées automatiquement
+        <button class="retry-btn" onclick="syncTasks()">🔄 Réessayer</button>
+    `;
+    document.body.prepend(banner);
+}
+
+// Cacher la bannière hors ligne
+function hideOfflineBanner() {
+    const banner = document.querySelector('.offline-banner');
+    if (banner) banner.remove();
+}
+
+// Synchroniser les tâches
+function syncTasks() {
+    if (!isOnline) {
+        pendingSync = true;
+        showInPageNotification('📶 Hors ligne', 'Impossible de synchroniser - pas de connexion');
+        return;
+    }
+    
+    pendingSync = false;
+    showInPageNotification('🔄 Synchronisation', 'En cours...');
+    
+    // Sauvegarder vers Google Drive
+    saveToGoogleDrive();
+    
+    // Synchroniser avec le serveur
+    fetch(APPS_SCRIPT_URL + '?action=sync', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data && data.tasks) {
+            // Fusionner les tâches
+            const merged = mergeTasks(tasks, data.tasks);
+            tasks = merged;
+            saveTasks();
+            loadTasks();
+            showInPageNotification('🔄 Synchronisé', 'Tâches synchronisées avec le serveur');
+        } else {
+            showInPageNotification('🔄 Synchronisé', 'Sauvegarde effectuée');
+        }
+    })
+    .catch(error => {
+        console.error('Erreur synchronisation:', error);
+        pendingSync = true;
+        showInPageNotification('⚠️ Synchronisation', 'Échec de la synchronisation - réessaiera plus tard');
+    });
+    
+    // Mettre à jour le statut
+    updateConnectionStatus();
+    hideOfflineBanner();
+}
+
+// Fusionner les tâches locales et distantes
+function mergeTasks(localTasks, remoteTasks) {
+    const merged = [...localTasks];
+    const localKeys = new Set(localTasks.map(t => t.text + t.dueDate));
+    
+    remoteTasks.forEach(remoteTask => {
+        const key = remoteTask.text + remoteTask.dueDate;
+        if (!localKeys.has(key)) {
+            merged.push(remoteTask);
+        } else {
+            // Mettre à jour la tâche existante si elle est plus récente
+            const localIndex = localTasks.findIndex(t => t.text + t.dueDate === key);
+            if (localIndex !== -1) {
+                const localTask = localTasks[localIndex];
+                // Comparer les dates de modification
+                if (remoteTask.lastModified && (!localTask.lastModified || 
+                    new Date(remoteTask.lastModified) > new Date(localTask.lastModified))) {
+                    merged[localIndex] = remoteTask;
+                }
+            }
+        }
+    });
+    
+    return merged;
+}
+
+// Modifier saveTasks pour marquer le dernier changement
+function saveTasksWithSync() {
+    tasks.forEach(task => {
+        task.lastModified = new Date().toISOString();
+    });
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    localStorage.setItem("categories", JSON.stringify(categories));
+    
+    // Si en ligne, synchroniser automatiquement
+    if (isOnline) {
+        // Débounce pour éviter trop de requêtes
+        clearTimeout(window.syncTimeout);
+        window.syncTimeout = setTimeout(() => {
+            syncTasks();
+        }, 5000);
+    } else {
+        pendingSync = true;
+    }
+}
+
+// Modifier les fonctions de sauvegarde pour utiliser saveTasksWithSync
+// Remplacer tous les appels à saveTasks() par saveTasksWithSync()
+// Mais garder la fonction saveTasks() pour compatibilité
+
+// Sauvegarde manuelle
+function manualSync() {
+    syncTasks();
+    showInPageNotification('🔄 Sync', 'Synchronisation manuelle demandée');
+}
+
+// Sauvegarde programmée toutes les heures
+setInterval(() => {
+    if (isOnline) {
+        syncTasks();
+    }
+}, 3600000);
 </script>
 </div>
 </body>
