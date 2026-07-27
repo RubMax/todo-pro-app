@@ -361,8 +361,8 @@
 .category-badge.personnel { background: #f3e5f5; color: #4a148c; }
 .category-badge.urgent { background: #ffebee; color: #b71c1c; }
 .category-badge.courses { background: #e8f5e9; color: #1b5e20; }
-.category-badge.Para-Agendar { background: #e0f7fa; color: #006064; }
-.category-badge.Agendado-Doc { background: #fff3e0; color: #e65100; }
+.category-badge.santé { background: #e0f7fa; color: #006064; }
+.category-badge.finance { background: #fff3e0; color: #e65100; }
 .category-badge.famille { background: #fce4ec; color: #880e4f; }
 .category-badge.loisirs { background: #fff8e1; color: #f57f17; }
 
@@ -617,31 +617,18 @@
       <div>
           <div style="margin-top: 5px; padding: 5px; border: 1px solid #ccc; border-radius: 10px; background-color: #f8f9fa;">
             <button onclick="showStats()" class="w-100 mb-1" style="background:#6c757d;">📊 Statistiques</button>
-            <button onclick="toggleTheme()" class="w-100 mb-1" style="background:#6c757d;">🌙 Thème</button>
-      </div>
-                     <!-- Ajouter ce bouton dans le panneau latéral -->
-        <div style="margin-top: 5px; padding: 5px; border: 1px solid #ccc; border-radius: 10px; background-color: #f8f9fa;">
             <button onclick="showCalendar()" class="w-100 mb-1">📅 Calendrier</button>
-        </div>
-        <!-- Ajouter ce bouton dans le panneau latéral -->
-        <div style="margin-top: 5px; padding: 5px; border: 1px solid #ccc; border-radius: 10px; background-color: #f8f9fa;">
             <button onclick="syncTasks()" class="w-100 mb-1">🔄 Synchroniser</button>
             <div id="connectionStatus" style="font-size:11px;text-align:center;color:#666;">
                 📶 Connecté
-       </div>
-
-       </div>
-      <div>
-          <!-- Ajouter dans le panneau latéral, dans la section des boutons -->
-<div style="margin-top: 5px; padding: 5px; border: 1px solid #ccc; border-radius: 10px; background-color: #f8f9fa;">
-    <button onclick="requestNotificationPermission()" class="w-100 mb-1" id="notifPermissionBtn">
-        🔔 Activer notifications
-    </button>
-    <div id="notifStatus" style="font-size:11px;text-align:center;color:#666;">
-        ⚠️ Cliquez pour activer
-    </div>
-</div>
-      </div>
+            </div>
+            <button onclick="requestNotificationPermission()" class="w-100 mb-1" id="notifPermissionBtn">
+                🔔 Activer notifications
+            </button>
+         </div>
+            <div style="margin-top: 5px; padding: 5px; border: 1px solid #ccc; border-radius: 10px; background-color: #f8f9fa;">
+                <button onclick="toggleTheme()" class="w-100 mb-1" style="background:#6c757d;">🌙 Thème</button>
+            </div>
     </div>
     </div>
 
@@ -663,8 +650,8 @@
   <option value="Personnel">
   <option value="Urgent">
   <option value="Courses">
-  <option value="Para-Agendar">
-  <option value="Agendado-Doc">
+  <option value="Santé">
+  <option value="Finance">
   <option value="Famille">
   <option value="Loisirs">
 </datalist>
@@ -675,15 +662,15 @@
 
       <div class="filter-section">
     <div class="filter-buttons">
-      <button onclick="setFilter('today')" id="filter-today" class="active">Aujourd'hui</button>
-      <button onclick="setFilter('all')" id="filter-all" >Toutes</button>
+      <button onclick="setFilter('all')" id="filter-all" class="active">Toutes</button>
+      <button onclick="setFilter('today')" id="filter-today">Aujourd'hui</button>
       <button onclick="setFilter('daily')" id="filter-daily">Journalier</button>
       <button onclick="setFilter('monthly')" id="filter-monthly">Mensuelles</button>
       <button onclick="setFilter('yearly')" id="filter-yearly">Annuel</button>
       <button onclick="setFilter('done')" id="filter-done">Accomplies</button>
       <button onclick="setFilter('notDone')" id="filter-notDone">Non accomplies</button>
       <!-- Ajouter cette section après les filtres existants -->
-   <div class="category-filter" id="categoryFilter">
+<div class="category-filter" id="categoryFilter">
   <button onclick="setCategoryFilter('all')" class="active-cat">🏷️ Toutes</button>
   <!-- Les catégories seront générées dynamiquement -->
 </div>
@@ -691,7 +678,6 @@
   </div>
 
       <div id="taskList"></div>
-      
     </div>
   </div>
 </div>
@@ -1049,8 +1035,8 @@ function saveTasks() {
       
       if (!hourMatch || !minuteMatch) return;
 
-      const due = new Date(task.dueDate);
-      let show = false;
+      const [y, m, d] = task.dueDate.split("-").map(Number);
+const due = new Date(y, m - 1, d);      let show = false;
 
       switch(task.repeat){
         case "day":
@@ -1095,7 +1081,8 @@ function saveTasks() {
         const [hour, minute] = task.reminderTime.split(":").map(Number);
         if (hour !== currentHour || minute !== currentMinute) return;
 
-        const due = new Date(task.dueDate);
+        const [y, m, d] = task.dueDate.split("-").map(Number);
+const due = new Date(y, m - 1, d);
         let show = false;
 
         switch(task.repeat){
@@ -1195,37 +1182,122 @@ function saveTasks() {
   }
 
   // Demander la permission pour les notifications
-  function requestNotificationPermission() {
+  // === DEMANDER LA PERMISSION POUR LES NOTIFICATIONS (AMÉLIORÉ) ===
+function requestNotificationPermission() {
     if (!('Notification' in window)) {
-      console.warn('⚠️ Notifications non supportées');
-      return;
+        showInPageNotification('⚠️', 'Les notifications ne sont pas supportées par ce navigateur');
+        updateNotificationStatus('not-supported');
+        return;
     }
 
+    // Si déjà accordée
     if (Notification.permission === 'granted') {
-      console.log('✅ Permission notifications accordée');
-      return;
+        showInPageNotification('✅', 'Notifications déjà activées');
+        updateNotificationStatus('granted');
+        return;
     }
 
+    // Si déjà refusée
     if (Notification.permission === 'denied') {
-      console.warn('⚠️ Permission notifications refusée');
-      return;
+        showInPageNotification('⚠️', 'Notifications refusées. Veuillez les autoriser dans les paramètres de votre navigateur.');
+        updateNotificationStatus('denied');
+        // Ouvrir les paramètres du navigateur
+        if (navigator.userAgent.includes('Chrome')) {
+            showInPageNotification('💡', 'Allez dans Paramètres > Confidentialité > Notifications');
+        }
+        return;
     }
 
+    // Demander la permission (cela déclenche la popup uniquement sur clic)
     Notification.requestPermission()
-      .then(function(permission) {
-        if (permission === 'granted') {
-          console.log('✅ Permission notifications accordée par l\'utilisateur');
-          setTimeout(() => {
-            sendNotification('✅ Notifications activées', 'Vous recevrez les rappels de tâches');
-          }, 1000);
-        } else {
-          console.warn('⚠️ Permission notifications refusée');
-        }
-      })
-      .catch(function(err) {
-        console.warn('⚠️ Erreur demande permission:', err);
-      });
-  }
+        .then(function(permission) {
+            if (permission === 'granted') {
+                console.log('✅ Permission notifications accordée');
+                updateNotificationStatus('granted');
+                
+                // Envoyer une notification de test
+                sendNotification('✅ Notifications activées', 'Vous recevrez les rappels de vos tâches !');
+                showInPageNotification('✅', 'Notifications activées avec succès !');
+                
+                // Sauvegarder la permission
+                localStorage.setItem('notificationsGranted', 'true');
+            } else {
+                console.warn('⚠️ Permission notifications refusée');
+                updateNotificationStatus('denied');
+                showInPageNotification('⚠️', 'Notifications refusées. Vous pouvez les activer plus tard.');
+            }
+        })
+        .catch(function(err) {
+            console.warn('⚠️ Erreur demande permission:', err);
+            updateNotificationStatus('error');
+        });
+}
+
+// === METTRE À JOUR LE STATUT D'AFFICHAGE ===
+function updateNotificationStatus(status) {
+    const statusEl = document.getElementById('notifStatus');
+    const btn = document.getElementById('notifPermissionBtn');
+    if (!statusEl) return;
+    
+    switch(status) {
+        case 'granted':
+            statusEl.innerHTML = '✅ Notifications activées';
+            statusEl.style.color = '#2e7d32';
+            if (btn) {
+                btn.textContent = '✅ Notifications activées';
+                btn.style.background = '#4caf50';
+            }
+            break;
+        case 'denied':
+            statusEl.innerHTML = '❌ Notifications refusées - <a href="#" onclick="openNotificationSettings()" style="color:#d32f2f;">Ouvrir paramètres</a>';
+            statusEl.style.color = '#c62828';
+            if (btn) {
+                btn.textContent = '🔔 Réactiver';
+                btn.style.background = '#dc3545';
+            }
+            break;
+        case 'not-supported':
+            statusEl.innerHTML = '⚠️ Non supporté par ce navigateur';
+            statusEl.style.color = '#ff6f00';
+            if (btn) {
+                btn.textContent = '⚠️ Non supporté';
+                btn.style.background = '#6c757d';
+                btn.disabled = true;
+            }
+            break;
+        case 'pending':
+            statusEl.innerHTML = '⏳ Demande en cours...';
+            statusEl.style.color = '#ff6f00';
+            break;
+        default:
+            statusEl.innerHTML = '🔔 Cliquez pour activer les notifications';
+            statusEl.style.color = '#666';
+            if (btn) {
+                btn.textContent = '🔔 Activer notifications';
+                btn.style.background = '#007bff';
+            }
+    }
+}
+
+// === OUVRIR LES PARAMÈTRES DE NOTIFICATIONS DU NAVIGATEUR ===
+function openNotificationSettings() {
+    // Pour Chrome
+    if (navigator.userAgent.includes('Chrome')) {
+        window.open('chrome://settings/content/notifications', '_blank');
+    } 
+    // Pour Firefox
+    else if (navigator.userAgent.includes('Firefox')) {
+        window.open('about:preferences#privacy', '_blank');
+    }
+    // Pour Edge
+    else if (navigator.userAgent.includes('Edg')) {
+        window.open('edge://settings/content/notifications', '_blank');
+    }
+    // Autres navigateurs
+    else {
+        showInPageNotification('💡', 'Veuillez activer les notifications dans les paramètres de votre navigateur');
+    }
+}
 
   // === AUTRES FONCTIONS ===
   function setFilter(value) {
@@ -1341,38 +1413,27 @@ function editTask(index) {
   showInPageNotification('✏️ Modifiée', 'Tâche mise à jour');
 }
 
-  // === MODIFIER LA FONCTION matchesFilter ===
-function matchesFilter(task) {
+  function matchesFilter(task) {
     const today = new Date().toISOString().split("T")[0];
-    
     if (currentFilter === "done") return task.completed;
     if (currentFilter === "notDone") return !task.completed;
-    
-    // MODIFICATION ICI : Afficher toutes les tâches dont la date = aujourd'hui
-    // Peu importe l'heure
-    if (currentFilter === "today") {
-        // Vérifier si la tâche a une date et qu'elle correspond à aujourd'hui
-        if (!task.dueDate) return false;
-        return task.dueDate === today;
-    }
-    
-    if (["day", "daily", "monthly", "yearly"].includes(currentFilter)) {
-        return task.repeat === currentFilter;
-    }
-    
+    if (currentFilter === "today") return task.dueDate === today;
+    if (["day", "daily", "monthly", "yearly"].includes(currentFilter)) return task.repeat === currentFilter;
     return true;
-}
+  }
 
   function matchesSearch(task) {
     const search = document.getElementById("searchInput").value.toLowerCase();
     return task.text.toLowerCase().includes(search);
   }
 
-  function formatDate(dateString) {
+function formatDate(dateString) {
     if (!dateString) return "Date inconnue";
-    const date = new Date(dateString);
-    return date.toLocaleDateString('fr-FR');
-  }
+
+    const [year, month, day] = dateString.split("-");
+
+    return `${day}/${month}/${year}`;
+}
 
   function getRepeatLabel(repeat) {
     if (repeat === "day") return "Jour";
@@ -1598,7 +1659,6 @@ function loadTasks() {
     displayPersistentNotifications();
     updateCategoryFilter();
 }
-
   function backupTasks() {
     const data = JSON.stringify(tasks, null, 2);
     const blob = new Blob([data], { type: "application/json" });
@@ -1632,13 +1692,14 @@ function loadTasks() {
   }
 
   // === INITIALISATION ===
-  // === INITIALISATION ===
-document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function() {
     // 1. Enregistrer le Service Worker
     registerServiceWorker();
 
     // 2. Charger les tâches
     loadTasks();
+
+    initConnectionManager();
 
     // 3. Vérifier les rappels toutes les 30 secondes (version avec persistance)
     setInterval(checkRemindersWithPersistence, 30000);
@@ -1656,24 +1717,21 @@ document.addEventListener('DOMContentLoaded', function() {
       saveToGoogleDrive();
     }, 3600000);
 
-    // 6. Initialiser la gestion de la connexion (Mode Hors Ligne)
-    initConnectionManager();
-    
-    // 7. Synchroniser au démarrage si en ligne
+    console.log("✅ Application Pro chargée avec catégories");
+
+    // 6. Vérifier si la page a été ouverte depuis une notification
+    if (window.location.search.includes('from=notification')) {
+      showInPageNotification('👋 Bienvenue', 'Vous avez été redirigé depuis une notification');
+    }
     if (navigator.onLine) {
         setTimeout(syncTasks, 3000);
     }
 
-    // 8. Vérifier si la page a été ouverte depuis une notification
-    if (window.location.search.includes('from=notification')) {
-      showInPageNotification('👋 Bienvenue', 'Vous avez été redirigé depuis une notification');
-    }
-
-    console.log("✅ Application chargée avec épinglage, calendrier, catégories, notifications persistantes et mode hors ligne");
+    console.log("✅ Application chargée avec notifications persistantes et bouton +1h");
   });
 
-// Sauvegarde automatique vers Google Drive
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUsXFGy0QNc9yzoLXMWxO2pK5UnQAjhCu83D_QgoWJXnkp_6oJKWRkU32VFpY8yVeBzQ/exec";
+  // Sauvegarde automatique vers Google Drive
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUsXFGy0QNc9yzoLXMWxO2pK5UnQAjhCu83D_QgoWJXnkp_6oJKWRkU32VFpY8yVeBzQ/exec";
 
   function saveToGoogleDrive() {
     const data = JSON.stringify(tasks, null, 2);
