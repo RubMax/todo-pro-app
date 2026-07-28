@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8">
-  <title>Liste des Tâches</title>
+  <title>RubMax Notes</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -364,7 +364,7 @@
 .category-badge.RNM-1aVia-Protocol { background: #e0f7fa; color: #006064; }
 .category-badge.RNM-2aVia-Protocol { background: #fff3e0; color: #e65100; }
 .category-badge.Finalisar-Ag-PF { background: #fce4ec; color: #880e4f; }
-.category-badge.loisirs { background: #fff8e1; color: #f57f17; }
+.category-badge.Devedor { background: #fff8e1; color: #f57f17; }
 
 .category-filter {
   display: flex;
@@ -588,6 +588,76 @@
     cursor: pointer;
     font-weight: bold;
 }
+/* Ajouter dans le <style> */
+.task-note {
+  font-size: 12px;
+  color: #555;
+  margin: 3px 0;
+  padding: 5px 10px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  border-left: 3px solid #ffc107;
+  transition: all 0.3s ease;
+}
+
+.task-note:hover {
+  background: rgba(255, 255, 255, 0.8);
+  border-left-color: #ff9800;
+}
+
+/* Animation pour les notes */
+@keyframes noteFadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.task-note {
+  animation: noteFadeIn 0.3s ease;
+}
+
+/* Popup de note */
+.note-popup textarea {
+  font-family: inherit;
+  resize: vertical;
+}
+
+.note-popup textarea:focus {
+  outline: 2px solid #007bff;
+  border-color: transparent;
+}
+
+/* Badge de note dans la liste */
+.task.has-note .task-text::after {
+  content: "📝";
+  margin-left: 5px;
+  font-size: 12px;
+}
+
+/* Thème sombre pour les notes */
+.dark-theme .task-note {
+  background: rgba(255, 255, 255, 0.1);
+  color: #e0e0e0;
+  border-left-color: #ffc107;
+}
+
+.dark-theme .task-note:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.dark-theme .note-popup {
+  background: #1a1a2e !important;
+  color: #e0e0e0;
+}
+
+.dark-theme .note-popup textarea {
+  background: #16213e;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+.dark-theme .note-popup textarea:focus {
+  outline-color: #64b5f6;
+}
   </style>
 </head>
         
@@ -601,19 +671,13 @@
 
   <div class="row">
     <div class="col-sm-2">
-       <h6>Liste des Tâches</h6>
+       <h6>RubMax Notes</h6>
       <div style="margin-top: 5px; padding: 5px; border: 1px solid #ccc; border-radius: 10px; background-color: #f8f9fa;">
             <button class="w-100 mb-1"><a href="index.html", target="_blank">Index</a></button>
 
       </div>
 
-      <div style="margin-top: 5px; padding: 5px; border: 1px solid #ccc; border-radius: 10px; background-color: #f8f9fa;">
-            <button onclick="backupTasks()" class="w-100 mb-1">💾 Backup</button>
-            <input type="file" id="backupFileInput" accept=".json" style="display: none;">
-            <button type="button" class="w-100" onclick="document.getElementById('backupFileInput').click()">📂 Importer</button>
-            <button onclick="importBackup()" class="w-100 mt-1">📥 Ajouter</button>
-            <div id="message" style="margin-top: 10px; color: green;"></div>
-      </div>
+      
       <div>
           <div style="margin-top: 5px; padding: 5px; border: 1px solid #ccc; border-radius: 10px; background-color: #f8f9fa;">
             <button onclick="showStats()" class="w-100 mb-1" style="background:#6c757d;">📊 Statistiques</button>
@@ -626,9 +690,21 @@
                 🔔 Activer notifications
             </button>
          </div>
-            <div style="margin-top: 5px; padding: 5px; border: 1px solid #ccc; border-radius: 10px; background-color: #f8f9fa;">
+         <div style="margin-top: 5px; padding: 5px; border: 1px solid #ccc; border-radius: 10px; background-color: #f8f9fa;">
                 <button onclick="toggleTheme()" class="w-100 mb-1" style="background:#6c757d;">🌙 Thème</button>
             </div>
+            <!-- Ajouter dans la sidebar ou la barre d'outils -->
+        <div style="margin-top:5px; padding:5px; border:1px solid #ccc; border-radius:10px; background-color: #f8f9fa;">
+          <button onclick="viewAllNotes()" class="w-100 mb-1" style="background:#ffc107; color:#333;">📝 Voir toutes les notes</button>
+          <button onclick="searchNotes()" class="w-100 mb-1" style="background:#17a2b8;">🔍 Rechercher dans les notes</button>
+        </div>
+        <div style="margin-top: 5px; padding: 5px; border: 1px solid #ccc; border-radius: 10px; background-color: #f8f9fa;">
+            <button onclick="backupTasks()" class="w-100 mb-1">💾 Backup</button>
+            <input type="file" id="backupFileInput" accept=".json" style="display: none;">
+            <button type="button" class="w-100" onclick="document.getElementById('backupFileInput').click()">📂 Importer</button>
+            <button onclick="importBackup()" class="w-100 mt-1">📥 Ajouter</button>
+            <div id="message" style="margin-top: 10px; color: green;"></div>
+      </div>
     </div>
     </div>
 
@@ -653,7 +729,7 @@
   <option value="RNM-1aVia-Protocol">
   <option value="RNM-2aVia-Protocol">
   <option value="Finalisar-Ag-PF">
-  <option value="Loisirs">
+  <option value="Devedor">
 </datalist>
         <button onclick="addTask()">➕ Ajouter</button>
       
@@ -838,100 +914,109 @@ setInterval(() => {
   // ============================================================
 
   // Fonction pour ajouter une notification persistante
-  function addPersistentNotification(taskIndex, taskText, dueDate, reminderTime) {
-    let notifications = JSON.parse(localStorage.getItem("persistentNotifications") || "[]");
-    
-    const notification = {
-      id: Date.now() + Math.random() * 1000,
-      taskIndex: taskIndex,
-      text: taskText,
-      dueDate: dueDate || new Date().toISOString().split('T')[0],
-      reminderTime: reminderTime || '12:00',
-      createdAt: new Date().toISOString(),
-      completed: false,
-      postponed: false,
-      hourAdded: 0 // Compteur d'heures ajoutées
-    };
-    
-    notifications.push(notification);
-    localStorage.setItem("persistentNotifications", JSON.stringify(notifications));
-    displayPersistentNotifications();
-    console.log("✅ Notification persistante ajoutée:", notification);
-  }
+  // Fonction pour ajouter une notification persistante
+function addPersistentNotification(taskIndex, taskText, dueDate, reminderTime) {
+  let notifications = JSON.parse(localStorage.getItem("persistentNotifications") || "[]");
+  
+  // IMPORTANT: Utiliser la dueDate passée en paramètre, PAS la date du jour
+  const notification = {
+    id: Date.now() + Math.random() * 1000,
+    taskIndex: taskIndex,
+    text: taskText,
+    dueDate: dueDate || new Date().toISOString().split('T')[0], // Utiliser dueDate reçue
+    reminderTime: reminderTime || '12:00',
+    createdAt: new Date().toISOString(),
+    completed: false,
+    postponed: false,
+    hourAdded: 0
+  };
+  
+  notifications.push(notification);
+  localStorage.setItem("persistentNotifications", JSON.stringify(notifications));
+  displayPersistentNotifications();
+  console.log("✅ Notification persistante ajoutée:", notification);
+}
 
   // Fonction pour afficher les notifications persistantes
   function displayPersistentNotifications() {
-    const container = document.getElementById('persistentNotificationsContainer');
-    if (!container) {
-      console.error("❌ Container des notifications introuvable");
-      return;
+  const container = document.getElementById('persistentNotificationsContainer');
+  if (!container) {
+    console.error("❌ Container des notifications introuvable");
+    return;
+  }
+  
+  const notifications = JSON.parse(localStorage.getItem("persistentNotifications") || "[]");
+  container.innerHTML = '';
+  
+  // Filtrer les notifications non complétées et non reportées
+  const activeNotifications = notifications.filter(n => !n.completed && !n.postponed);
+  
+  if (activeNotifications.length === 0) {
+    const emptyMsg = document.createElement('div');
+    emptyMsg.className = 'notification-empty';
+    emptyMsg.textContent = '✅ Toutes les notifications sont traitées';
+    container.appendChild(emptyMsg);
+    return;
+  }
+  
+  // Afficher chaque notification persistante
+  activeNotifications.forEach(notification => {
+    const notifDiv = document.createElement('div');
+    notifDiv.className = 'notification-persistent';
+    
+    // Déterminer si la notification est expirée
+    const dueDate = new Date(notification.dueDate);
+    const isExpired = dueDate < new Date();
+    
+    if (isExpired) {
+      notifDiv.classList.add('expired');
     }
     
-    const notifications = JSON.parse(localStorage.getItem("persistentNotifications") || "[]");
-    container.innerHTML = '';
+    // Formater la date d'échéance
+    const formattedDate = notification.dueDate ? new Date(notification.dueDate).toLocaleDateString('fr-FR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    }) : 'Date inconnue';
     
-    // Filtrer les notifications non complétées et non reportées
-    const activeNotifications = notifications.filter(n => !n.completed && !n.postponed);
-    
-    if (activeNotifications.length === 0) {
-      const emptyMsg = document.createElement('div');
-      emptyMsg.className = 'notification-empty';
-      emptyMsg.textContent = '✅ Toutes les notifications sont traitées';
-      container.appendChild(emptyMsg);
-      return;
-    }
-    
-    // Afficher chaque notification persistante
-    activeNotifications.forEach(notification => {
-      const notifDiv = document.createElement('div');
-      notifDiv.className = 'notification-persistent';
-      
-      // Déterminer si la notification est expirée
-      const dueDate = new Date(notification.dueDate);
-      const isExpired = dueDate < new Date();
-      
-      if (isExpired) {
-        notifDiv.classList.add('expired');
-      }
-      
-      notifDiv.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: start; gap: 10px;">
-          <div style="flex: 1;">
-            <strong style="color: ${isExpired ? '#d32f2f' : '#856404'}; font-size: 14px;">
-              ⏰ RAPPEL
-            </strong>
-            <div style="font-size: 15px; margin: 8px 0; font-weight: 500;">
-              ${notification.text}
-            </div>
-            <div style="font-size: 12px; color: #666;">
-              📅 ${formatDate(notification.dueDate)}
-              ⏰ ${notification.reminderTime}
-              ${isExpired ? ' ⚠️ En retard' : ''}
-              ${notification.hourAdded > 0 ? ` (⏱️ +${notification.hourAdded}h)` : ''}
-            </div>
+    notifDiv.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: start; gap: 10px;">
+        <div style="flex: 1;">
+          <strong style="color: ${isExpired ? '#d32f2f' : '#856404'}; font-size: 14px;">
+            ⏰ RAPPEL
+          </strong>
+          <div style="font-size: 15px; margin: 8px 0; font-weight: 500;">
+            ${notification.text}
+          </div>
+          <div style="font-size: 12px; color: #666;">
+            📅 ${formattedDate}
+            ⏰ ${notification.reminderTime || '12:00'}
+            ${isExpired ? ' ⚠️ En retard' : ''}
+            ${notification.hourAdded > 0 ? ` (⏱️ +${notification.hourAdded}h)` : ''}
           </div>
         </div>
-        <div style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;">
-          <button class="btn-accomplish" onclick="accomplishNotification(${notification.id})">
-            ✅ Accomplir
-          </button>
-          <button class="btn-add-hour" onclick="addHourNotification(${notification.id})">
-            🕐 +1h
-          </button>
-          <button class="btn-postpone" onclick="postponeNotification(${notification.id})">
-            📅 Pour demain
-          </button>
-          <button class="btn-dismiss" onclick="dismissNotification(${notification.id})">
-            ✕
-          </button>
-        </div>
-      `;
-      
-      container.appendChild(notifDiv);
-    });
+      </div>
+      <div style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;">
+        <button class="btn-accomplish" onclick="accomplishNotification(${notification.id})">
+          ✅ Accomplir
+        </button>
+        <button class="btn-add-hour" onclick="addHourNotification(${notification.id})">
+          🕐 +1h
+        </button>
+        <button class="btn-postpone" onclick="postponeNotification(${notification.id})">
+          📅 Pour demain
+        </button>
+        <button class="btn-dismiss" onclick="dismissNotification(${notification.id})">
+          ✕
+        </button>
+      </div>
+    `;
     
-    console.log(`📋 ${activeNotifications.length} notifications persistantes affichées`);
-  }
+    container.appendChild(notifDiv);
+  });
+  
+  console.log(`📋 ${activeNotifications.length} notifications persistantes affichées`);
+}
 
   // Fonction pour accomplir une notification
   function accomplishNotification(notificationId) {
@@ -1027,64 +1112,80 @@ setInterval(() => {
   }
 
   // Fonction pour envoyer une notification persistante
- function sendPersistentNotification(taskIndex, taskText, dueDate, reminderTime) {
-    playNotificationSound(); // Jouer le son
-    sendNotification('🔔 Rappel', taskText);
-    addPersistentNotification(taskIndex, taskText, dueDate, reminderTime);
-    showInPageNotification('🔔 Rappel', taskText);
+ // Fonction pour envoyer une notification persistante
+function sendPersistentNotification(taskIndex, taskText, dueDate, reminderTime) {
+  playNotificationSound();
+  sendNotification('🔔 Rappel', taskText);
+  // Passer explicitement dueDate et reminderTime
+  addPersistentNotification(taskIndex, taskText, dueDate, reminderTime);
+  showInPageNotification('🔔 Rappel', taskText);
 }
 
   // === VÉRIFICATION DES RAPPELS AMÉLIORÉE AVEC PERSISTANCE ===
-  function checkRemindersWithPersistence() {
-    const now = new Date();
-    const today = now.toISOString().split("T")[0];
-    const currentHour = now.getHours();
-    const currentMinute = now.getMinutes();
+  // === VÉRIFICATION DES RAPPELS AVEC PERSISTANCE ===
+function checkRemindersWithPersistence() {
+  const now = new Date();
+  const today = now.toISOString().split("T")[0];
+  const currentHour = now.getHours();
+  const currentMinute = now.getMinutes();
 
-    tasks.forEach((task, index) => {
-      if (task.completed) return;
-      if (!task.reminderTime) return;
-      if (!task.dueDate) return;
+  tasks.forEach((task, index) => {
+    // 1. Vérifier si la tâche est déjà accomplie
+    if (task.completed) return;
+    
+    // 2. Vérifier si la tâche a une heure de rappel
+    if (!task.reminderTime) return;
+    
+    // 3. Vérifier si la tâche a une date d'échéance
+    if (!task.dueDate) return;
 
-      const [hour, minute] = task.reminderTime.split(":").map(Number);
-      
-      // Vérifier si l'heure correspond (avec une marge de 1 minute)
-      const hourMatch = hour === currentHour;
-      const minuteMatch = minute === currentMinute || minute === currentMinute - 1 || minute === currentMinute + 1;
-      
-      if (!hourMatch || !minuteMatch) return;
+    // 4. Extraire l'heure et les minutes du rappel
+    const [hour, minute] = task.reminderTime.split(":").map(Number);
+    
+    // 5. Vérifier si l'heure correspond (avec une marge de 1 minute)
+    const hourMatch = hour === currentHour;
+    const minuteMatch = minute === currentMinute || 
+                        minute === currentMinute - 1 || 
+                        minute === currentMinute + 1;
+    
+    if (!hourMatch || !minuteMatch) return;
 
-      const [y, m, d] = task.dueDate.split("-").map(Number);
-const due = new Date(y, m - 1, d);      let show = false;
+    // 6. Vérifier si la tâche doit être affichée selon son type de répétition
+    const due = new Date(task.dueDate);
+    let show = false;
 
-      switch(task.repeat){
-        case "day":
-          show = (task.dueDate === today);
-          break;
-        case "daily":
-          show = true;
-          break;
-        case "monthly":
-          show = due.getDate() === now.getDate();
-          break;
-        case "yearly":
-          show = due.getDate() === now.getDate() && due.getMonth() === now.getMonth();
-          break;
-      }
+    switch(task.repeat){
+      case "day":
+        show = (task.dueDate === today);
+        break;
+      case "daily":
+        show = true;
+        break;
+      case "monthly":
+        show = due.getDate() === now.getDate();
+        break;
+      case "yearly":
+        show = due.getDate() === now.getDate() && 
+               due.getMonth() === now.getMonth();
+        break;
+    }
 
-      if(!show) return;
+    if(!show) return;
 
-      const key = today + "_" + currentHour + "_" + currentMinute;
-      if(task.lastReminder === key) return;
+    // 7. Éviter les doublons de rappel
+    const key = today + "_" + currentHour + "_" + currentMinute;
+    if(task.lastReminder === key) return;
 
-      // Envoyer une notification persistante
-      sendPersistentNotification(index, task.text, task.dueDate, task.reminderTime);
-      
-      task.lastReminder = key;
-      saveTasks();
-      saveToGoogleDrive();
-    });
-  }
+    // 8. Envoyer la notification AVEC la date et l'heure de la tâche
+    console.log(`📨 Envoi notification pour: "${task.text}" à ${task.reminderTime} le ${task.dueDate}`);
+    sendPersistentNotification(index, task.text, task.dueDate, task.reminderTime);
+    
+    // 9. Marquer le rappel comme envoyé
+    task.lastReminder = key;
+    saveTasks();
+    saveToGoogleDrive();
+  });
+}
 
   // === VÉRIFICATION DES RAPPELS ORIGINALE (conservée) ===
   function checkReminders() {
@@ -1647,25 +1748,27 @@ function loadTasks() {
         const categoryBadges = getCategoryBadges(task);
         const pinIcon = task.pinned ? '📌 ' : '';
 
+        // Dans la fonction loadTasks(), remplacez la partie taskDiv.innerHTML par :
         taskDiv.innerHTML = `
-            <span>
-                <span class="pin-indicator">${task.pinned ? '📌' : ''}</span>
-                ${task.text}
-                ${categoryBadges}
-                <div class="info">
-                    ${task.dueDate ? `📅 ${formatDate(task.dueDate)} ` : ""}
-                    ${task.repeat ? `🔁 ${getRepeatLabel(task.repeat)}` : ""}
-                    ${task.reminderTime ? `⏰ ${task.reminderTime}` : ""}
-                </div>
-            </span>
-            <div class="buttons">
-                <button class="pin-btn" onclick="togglePinTask(${index})" title="Épingler/Désépingler">
-                    ${task.pinned ? '📌' : '📍'}
-                </button>
-                <button onclick="toggleTask(${index})">✅</button>
-                <button onclick="editTask(${index})">✏️</button>
-                <button onclick="deleteTask(${index})">🗑️</button>
+          <span>
+            <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">
+              <span style="font-weight:500;">${task.text}</span>
+              ${categoryBadges}
             </div>
+            ${task.note ? `<div class="task-note" style="font-size:12px;color:#555;margin:3px 0;padding:3px 8px;background:rgba(255,255,255,0.5);border-radius:5px;border-left:3px solid #ffc107;">📝 ${task.note}</div>` : ''}
+            <div class="info">
+              ${task.dueDate ? `📅 ${formatDate(task.dueDate)} ` : ""}
+              ${task.repeat ? `🔁 ${getRepeatLabel(task.repeat)}` : ""}
+              ${task.reminderTime ? `⏰ ${task.reminderTime}` : ""}
+              ${task.updatedAt ? ` 🕐 Modifié: ${new Date(task.updatedAt).toLocaleDateString('fr-FR')}` : ''}
+            </div>
+          </span>
+          <div class="buttons">
+            <button onclick="toggleTask(${index})">✅</button>
+            <button onclick="editTask(${index})">✏️</button>
+            <button onclick="addNoteToTask(${index})" title="Ajouter une note">📝</button>
+            <button onclick="deleteTask(${index})">🗑️</button>
+          </div>
         `;
 
         taskList.appendChild(taskDiv);
@@ -2220,7 +2323,6 @@ function syncTasks() {
     }
     
     pendingSync = false;
-    showInPageNotification('🔄 Synchronisation', 'En cours...');
     
     // Sauvegarder vers Google Drive
     saveToGoogleDrive();
@@ -2246,7 +2348,6 @@ function syncTasks() {
     .catch(error => {
         console.error('Erreur synchronisation:', error);
         pendingSync = true;
-        showInPageNotification('⚠️ Synchronisation', 'Échec de la synchronisation - réessaiera plus tard');
     });
     
     // Mettre à jour le statut
@@ -2316,6 +2417,327 @@ setInterval(() => {
         syncTasks();
     }
 }, 3600000);
+
+// === FONCTIONS POUR LES NOTES ===
+
+// Ajouter ou modifier une note
+function addNoteToTask(index) {
+  const task = tasks[index];
+  if (!task) return;
+  
+  const currentNote = task.note || '';
+  const note = prompt('✏️ Ajouter/modifier une note pour cette tâche :\n\n(Laisser vide pour supprimer)', currentNote);
+  
+  if (note === null) return; // Annulé
+  
+  if (note.trim() === '') {
+    // Supprimer la note
+    if (task.note) {
+      if (confirm('Supprimer la note de cette tâche ?')) {
+        delete task.note;
+        saveTasks();
+        loadTasks();
+      }
+    }
+    return;
+  }
+  
+  // Sauvegarder la note
+  task.note = note.trim();
+  task.updatedAt = new Date().toISOString();
+  saveTasks();
+  loadTasks();
+  saveToGoogleDrive();
+}
+
+// Ajouter un commentaire rapide (sans popup)
+function addQuickNote(index) {
+  const task = tasks[index];
+  if (!task) return;
+  
+  // Créer une interface de saisie rapide
+  const noteInput = document.createElement('div');
+  noteInput.style.cssText = `
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    max-width: 400px;
+    width: 90%;
+  `;
+  noteInput.innerHTML = `
+    <h4 style="margin-top:0;">📝 Note pour "${task.text}"</h4>
+    <textarea id="quickNoteText" style="width:100%;min-height:100px;padding:10px;border-radius:5px;border:1px solid #ccc;font-size:14px;" placeholder="Écrivez votre note ici...">${task.note || ''}</textarea>
+    <div style="margin-top:10px;display:flex;gap:10px;justify-content:flex-end;">
+      <button onclick="this.closest('div[style]').remove()" style="background:#6c757d;">Annuler</button>
+      <button onclick="saveQuickNote(${index})" style="background:#007bff;">💾 Sauvegarder</button>
+    </div>
+  `;
+  document.body.appendChild(noteInput);
+  
+  // Focus sur le textarea
+  setTimeout(() => document.getElementById('quickNoteText').focus(), 100);
+}
+
+// Sauvegarder la note rapide
+function saveQuickNote(index) {
+  const textarea = document.getElementById('quickNoteText');
+  if (!textarea) return;
+  
+  const note = textarea.value.trim();
+  const task = tasks[index];
+  
+  if (note === '') {
+    delete task.note;
+  } else {
+    task.note = note;
+  }
+  
+  task.updatedAt = new Date().toISOString();
+  saveTasks();
+  loadTasks();
+  saveToGoogleDrive();
+  showInPageNotification('📝 Note sauvegardée', `Note mise à jour pour "${task.text}"`);
+  
+  // Fermer la popup
+  const popup = textarea.closest('div[style]');
+  if (popup) popup.remove();
+}
+
+// Voir toutes les notes (vue d'ensemble)
+function viewAllNotes() {
+  const tasksWithNotes = tasks.filter(t => t.note && t.note.trim() !== '');
+  
+  if (tasksWithNotes.length === 0) {
+    showInPageNotification('📝 Aucune note', 'Aucune tâche ne contient de note');
+    return;
+  }
+  
+  const notesContainer = document.createElement('div');
+  notesContainer.style.cssText = `
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+  `;
+  
+  let html = `
+    <h4 style="margin-top:0;">📝 Toutes les notes (${tasksWithNotes.length})</h4>
+    <button onclick="this.closest('div[style]').remove()" style="position:absolute;top:10px;right:10px;background:#dc3545;color:white;border:none;border-radius:50%;width:30px;height:30px;font-size:16px;cursor:pointer;">✕</button>
+    <hr>
+  `;
+  
+  tasksWithNotes.forEach(task => {
+    const taskIndex = tasks.indexOf(task);
+    html += `
+      <div style="margin-bottom:15px;padding:10px;background:#f8f9fa;border-radius:8px;border-left:3px solid #ffc107;">
+        <div style="font-weight:bold;display:flex;justify-content:space-between;">
+          <span>${task.text}</span>
+          <span style="font-size:12px;color:#666;">
+            ${task.dueDate ? `📅 ${formatDate(task.dueDate)}` : ''}
+          </span>
+        </div>
+        <div style="margin-top:5px;font-size:14px;color:#333;padding:5px;background:white;border-radius:5px;">
+          ${task.note}
+        </div>
+        <div style="margin-top:5px;display:flex;gap:5px;">
+          <button onclick="editNoteFromView(${taskIndex})" style="font-size:11px;padding:2px 8px;">✏️ Modifier</button>
+          <button onclick="deleteNoteFromView(${taskIndex})" style="font-size:11px;padding:2px 8px;background:#dc3545;">🗑️ Supprimer</button>
+        </div>
+      </div>
+    `;
+  });
+  
+  notesContainer.innerHTML = html;
+  document.body.appendChild(notesContainer);
+}
+
+// Éditer une note depuis la vue d'ensemble
+function editNoteFromView(index) {
+  const task = tasks[index];
+  if (!task) return;
+  
+  const newNote = prompt('Modifier la note :', task.note || '');
+  if (newNote === null) return;
+  
+  if (newNote.trim() === '') {
+    delete task.note;
+  } else {
+    task.note = newNote.trim();
+  }
+  
+  task.updatedAt = new Date().toISOString();
+  saveTasks();
+  loadTasks();
+  saveToGoogleDrive();
+  
+  // Rafraîchir la vue
+  const container = document.querySelector('[style*="position:fixed"][style*="z-index:10000"]');
+  if (container) {
+    viewAllNotes();
+  }
+  
+}
+
+// Supprimer une note depuis la vue d'ensemble
+function deleteNoteFromView(index) {
+  const task = tasks[index];
+  if (!task) return;
+  
+  if (confirm(`Supprimer la note de "${task.text}" ?`)) {
+    delete task.note;
+    saveTasks();
+    loadTasks();
+    saveToGoogleDrive();
+    
+    // Rafraîchir la vue
+    const container = document.querySelector('[style*="position:fixed"][style*="z-index:10000"]');
+    if (container) {
+      viewAllNotes();
+    }
+    showInPageNotification('📝 Note supprimée', `Note supprimée de "${task.text}"`);
+  }
+}
+
+// Exporter les notes (pour sauvegarde)
+function exportNotes() {
+  const tasksWithNotes = tasks.filter(t => t.note && t.note.trim() !== '');
+  
+  if (tasksWithNotes.length === 0) {
+    showInPageNotification('📝 Aucune note', 'Aucune note à exporter');
+    return;
+  }
+  
+  let text = '=== NOTES DES TÂCHES ===\n\n';
+  text += `Exporté le: ${new Date().toLocaleString()}\n`;
+  text += `Total: ${tasksWithNotes.length} notes\n\n`;
+  text += '='.repeat(50) + '\n\n';
+  
+  tasksWithNotes.forEach((task, i) => {
+    text += `📌 TÂCHE ${i+1}: ${task.text}\n`;
+    text += `📅 Date: ${task.dueDate || 'Non définie'}\n`;
+    text += `📝 Note: ${task.note}\n`;
+    text += `✅ Statut: ${task.completed ? 'Accomplie' : 'En attente'}\n`;
+    text += '-'.repeat(30) + '\n\n';
+  });
+  
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `notes_export_${new Date().toISOString().split('T')[0]}.txt`;
+  a.click();
+  
+  showInPageNotification('📤 Export réussi', `${tasksWithNotes.length} notes exportées`);
+}
+
+// Rechercher dans les notes
+function searchNotes() {
+  const search = prompt('🔍 Rechercher dans les notes :');
+  if (!search || search.trim() === '') return;
+  
+  const searchTerm = search.trim().toLowerCase();
+  const results = tasks.filter(t => 
+    t.note && t.note.toLowerCase().includes(searchTerm)
+  );
+  
+  if (results.length === 0) {
+    showInPageNotification('🔍 Aucun résultat', `Aucune note ne contient "${searchTerm}"`);
+    return;
+  }
+  
+  const container = document.createElement('div');
+  container.style.cssText = `
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+  `;
+  
+  let html = `
+    <h4>🔍 Résultats pour "${searchTerm}" (${results.length})</h4>
+    <button onclick="this.closest('div[style]').remove()" style="position:absolute;top:10px;right:10px;background:#dc3545;color:white;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;">✕</button>
+    <hr>
+  `;
+  
+  results.forEach(task => {
+    const highlightedNote = task.note.replace(
+      new RegExp(searchTerm, 'gi'),
+      match => `<span style="background:yellow;font-weight:bold;">${match}</span>`
+    );
+    
+    html += `
+      <div style="margin-bottom:10px;padding:10px;background:#f8f9fa;border-radius:5px;">
+        <div style="font-weight:bold;">${task.text}</div>
+        <div style="font-size:14px;margin-top:5px;">${highlightedNote}</div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html;
+  document.body.appendChild(container);
+}
+
+// Ajouter des commentaires chronologiques
+function addCommentToTask(index) {
+  const task = tasks[index];
+  if (!task) return;
+  
+  const comment = prompt('💬 Ajouter un commentaire :');
+  if (!comment || comment.trim() === '') return;
+  
+  if (!task.comments) task.comments = [];
+  task.comments.push({
+    text: comment.trim(),
+    date: new Date().toISOString()
+  });
+  
+  task.updatedAt = new Date().toISOString();
+  saveTasks();
+  loadTasks();
+  saveToGoogleDrive();
+  showInPageNotification('💬 Commentaire ajouté', `Commentaire ajouté à "${task.text}"`);
+}
+
+// Afficher les commentaires dans la tâche
+function getCommentsHtml(task) {
+  if (!task.comments || task.comments.length === 0) return '';
+  
+  return `
+    <div style="margin-top:5px;padding:5px;background:rgba(255,255,255,0.3);border-radius:5px;font-size:11px;">
+      <div style="font-weight:bold;color:#666;">💬 Commentaires (${task.comments.length})</div>
+      ${task.comments.slice(-3).reverse().map(c => `
+        <div style="padding:2px 0;border-bottom:1px solid rgba(0,0,0,0.05);">
+          <span>${c.text}</span>
+          <span style="color:#999;font-size:9px;">${new Date(c.date).toLocaleDateString('fr-FR')}</span>
+        </div>
+      `).join('')}
+      ${task.comments.length > 3 ? `<div style="color:#666;font-size:9px;">... ${task.comments.length - 3} commentaires supplémentaires</div>` : ''}
+    </div>
+  `;
+}
 </script>
 </div>
 </body>
