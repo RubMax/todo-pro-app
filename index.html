@@ -954,7 +954,7 @@ function addPersistentNotification(taskIndex, taskText, dueDate, reminderTime) {
   if (activeNotifications.length === 0) {
     const emptyMsg = document.createElement('div');
     emptyMsg.className = 'notification-empty';
-    emptyMsg.textContent = '✅ Toutes les notifications sont traitées';
+    emptyMsg.textContent = '';
     container.appendChild(emptyMsg);
     return;
   }
