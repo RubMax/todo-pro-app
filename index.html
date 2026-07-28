@@ -1312,7 +1312,6 @@ function requestNotificationPermission() {
 
     // Si déjà accordée
     if (Notification.permission === 'granted') {
-        showInPageNotification('✅', 'Notifications déjà activées');
         updateNotificationStatus('granted');
         return;
     }
@@ -1528,7 +1527,6 @@ function editTask(index) {
   saveTasks();
   loadTasks();
   saveToGoogleDrive();
-  showInPageNotification('✏️ Modifiée', 'Tâche mise à jour');
 }
 
   function matchesFilter(task) {
@@ -1623,7 +1621,6 @@ function formatDate(dateString) {
       }
       saveTasks();
       loadTasks();
-      showInPageNotification('🏷️ Catégorie ajoutée', `"${cat}" ajoutée à la tâche`);
     }
   }
 
