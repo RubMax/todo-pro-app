@@ -743,6 +743,7 @@
     <div class="filter-buttons">
       <button onclick="setFilter('all')" id="filter-all" class="active">Toutes</button>
       <button onclick="setFilter('today')" id="filter-today">Aujourd'hui</button>
+       <button onclick="setFilter('tomorrow')" id="filter-tomorrow">Demain</button>
       <button onclick="setFilter('daily')" id="filter-daily">Journalier</button>
       <button onclick="setFilter('monthly')" id="filter-monthly">Mensuelles</button>
       <button onclick="setFilter('yearly')" id="filter-yearly">Annuel</button>
@@ -784,6 +785,7 @@ function saveTasks() {
     tasks.forEach(task => {
         if (!task.lastModified) {
             task.lastModified = new Date().toISOString();
+            updateTodayTomorrowBadges();
         }
     });
     
@@ -1476,6 +1478,43 @@ function addTask() {
   loadTasks();
 }
 
+// Compter les tâches pour demain
+function countTasksForTomorrow() {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowStr = tomorrow.toISOString().split("T")[0];
+    
+    return tasks.filter(t => t.dueDate === tomorrowStr && !t.completed).length;
+}
+
+// Mettre à jour le badge du bouton Demain
+function updateTomorrowBadge() {
+    const tomorrowBtn = document.getElementById('filter-tomorrow');
+    if (tomorrowBtn) {
+        const count = countTasksForTomorrow();
+        if (count > 0) {
+            // Ajouter un badge avec le nombre
+            if (!tomorrowBtn.querySelector('.badge-count')) {
+                const badge = document.createElement('span');
+                badge.className = 'badge-count';
+                badge.style.cssText = `
+                    background: #ff4444;
+                    color: white;
+                    border-radius: 50%;
+                    padding: 0 6px;
+                    font-size: 10px;
+                    margin-left: 5px;
+                `;
+                tomorrowBtn.appendChild(badge);
+            }
+            tomorrowBtn.querySelector('.badge-count').textContent = count;
+        } else {
+            const badge = tomorrowBtn.querySelector('.badge-count');
+            if (badge) badge.remove();
+        }
+    }
+}
+
 // Filtrer par catégorie
 function matchesCategory(task) {
   if (currentCategory === 'all') return true;
@@ -1532,14 +1571,23 @@ function editTask(index) {
   saveToGoogleDrive();
 }
 
+
+
   function matchesFilter(task) {
     const today = new Date().toISOString().split("T")[0];
+    
+    // Calculer la date de demain
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowStr = tomorrow.toISOString().split("T")[0];
+    
     if (currentFilter === "done") return task.completed;
     if (currentFilter === "notDone") return !task.completed;
     if (currentFilter === "today") return task.dueDate === today;
+    if (currentFilter === "tomorrow") return task.dueDate === tomorrowStr;
     if (["day", "daily", "monthly", "yearly"].includes(currentFilter)) return task.repeat === currentFilter;
     return true;
-  }
+}
 
   function matchesSearch(task) {
     const search = document.getElementById("searchInput").value.toLowerCase();
@@ -1777,6 +1825,7 @@ function loadTasks() {
     saveToGoogleDrive();
     displayPersistentNotifications();
     updateCategoryFilter();
+    updateTodayTomorrowBadges();
 }
   function backupTasks() {
     const data = JSON.stringify(tasks, null, 2);
@@ -1831,6 +1880,8 @@ function loadTasks() {
 
     // Mettre à jour les catégories
     updateCategoryFilter();
+     updateTomorrowButton();
+      updateTodayTomorrowBadges();
 
     setInterval(() => {
       saveToGoogleDrive();
@@ -2736,6 +2787,74 @@ function getCommentsHtml(task) {
       ${task.comments.length > 3 ? `<div style="color:#666;font-size:9px;">... ${task.comments.length - 3} commentaires supplémentaires</div>` : ''}
     </div>
   `;
+}
+function countTasksForToday() {
+    const today = new Date().toISOString().split("T")[0];
+
+    return tasks.filter(task =>
+        !task.completed &&
+        task.dueDate === today
+    ).length;
+}
+function countTasksForTomorrow() {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowStr = tomorrow.toISOString().split("T")[0];
+
+    return tasks.filter(task =>
+        !task.completed &&
+        task.dueDate === tomorrowStr
+    ).length;
+}
+function updateButtonBadge(buttonId, count) {
+
+    const button = document.getElementById(buttonId);
+    if (!button) return;
+
+    let badge = button.querySelector(".badge-count");
+
+    if (count > 0) {
+
+        if (!badge) {
+            badge = document.createElement("span");
+            badge.className = "badge-count";
+
+            badge.style.cssText = `
+                background:#ff3b30;
+                color:white;
+                border-radius:12px;
+                padding:2px 7px;
+                margin-left:6px;
+                font-size:09px;
+                font-weight:bold;
+                display:inline-block;
+                min-width:18px;
+                text-align:center;
+            `;
+
+            button.appendChild(badge);
+        }
+
+        badge.textContent = count;
+
+    } else {
+
+        if (badge) badge.remove();
+
+    }
+}
+function updateTodayTomorrowBadges() {
+
+    updateButtonBadge(
+        "filter-today",
+        countTasksForToday()
+    );
+
+    updateButtonBadge(
+        "filter-tomorrow",
+        countTasksForTomorrow()
+    );
+
 }
 </script>
 </div>
